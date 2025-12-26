@@ -14,6 +14,11 @@
 
 ## ✨ Features
 
+<div align="center">
+  <img src="https://raw.githubusercontent.com/voidksa/BootEase/main/screenshots/app_en.png" alt="BootEase Application" width="45%" />
+  <img src="https://raw.githubusercontent.com/voidksa/BootEase/main/screenshots/setup_en.png" alt="BootEase Installer" width="45%" />
+</div>
+
 - **One-Click BIOS Entry**: Instantly restart and boot directly into UEFI settings.
 - **UEFI Detection**: Automatically detects if your system supports UEFI.
 - **Admin Elevation**: Auto-requests necessary privileges to perform firmware commands.
