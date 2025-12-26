@@ -68,7 +68,7 @@
 
         <Grid Grid.Row="2">
             <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="12">
-                 <Hyperlink NavigateUri="https://github.com/YOUR_USERNAME/BootEase" RequestNavigate="Hyperlink_RequestNavigate">
+                 <Hyperlink NavigateUri="https://github.com/voidksa/BootEase" RequestNavigate="Hyperlink_RequestNavigate">
                      GitHub
                  </Hyperlink>
             </TextBlock>

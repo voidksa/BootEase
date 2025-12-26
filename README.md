@@ -1,7 +1,7 @@
 # BootEase 🚀
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/YOUR_USERNAME/BootEase/main/app.ico" alt="BootEase Logo" width="128" height="128" />
+  <img src="https://raw.githubusercontent.com/voidksa/BootEase/main/app.ico" alt="BootEase Logo" width="128" height="128" />
   <br>
   <p><b>One-Click BIOS/UEFI Entry Utility for Windows</b></p>
   
@@ -23,7 +23,7 @@
 
 ## 🛠️ Installation
 
-You can download the latest installer from the [Releases](https://github.com/YOUR_USERNAME/BootEase/releases) page.
+You can download the latest installer from the [Releases](https://github.com/voidksa/BootEase/releases) page.
 
 1. Download `BootEaseSetup.exe`.
 2. Run the installer.
@@ -49,7 +49,7 @@ Requirements:
 
 ```powershell
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/BootEase.git
+git clone https://github.com/voidksa/BootEase.git
 
 # Navigate to the project
 cd BootEase

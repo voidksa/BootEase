@@ -1,6 +1,6 @@
 # BootEase (أداة إعادة التشغيل إلى BIOS/UEFI)
 
-![BootEase](https://raw.githubusercontent.com/YOUR_USERNAME/BootEase/main/app.ico)
+![BootEase](https://raw.githubusercontent.com/voidksa/BootEase/main/app.ico)
 
 **BootEase** هي أداة مساعدة بسيطة وخفيفة لنظام التشغيل Windows تتيح لك إعادة تشغيل الكمبيوتر والدخول تلقائياً إلى إعدادات BIOS/UEFI بنقرة واحدة، دون الحاجة للضغط المتكرر على مفاتيح مثل F2 أو DEL.
 
@@ -21,7 +21,7 @@
 
 ## التحميل والتثبيت
 
-يمكنك تحميل أحدث إصدار من صفحة [الإصدارات (Releases)](../../releases).
+يمكنك تحميل أحدث إصدار من صفحة [الإصدارات (Releases)](https://github.com/voidksa/BootEase/releases).
 
 1.  قم بتحميل ملف التثبيت `BootEaseSetup.exe`.
 2.  شغل المثبت واتبع التعليمات.
@@ -46,7 +46,7 @@
 ### خطوات البناء
 1.  استنسخ المستودع:
     ```bash
-    git clone https://github.com/YOUR_USERNAME/BootEase.git
+    git clone https://github.com/voidksa/BootEase.git
     ```
 2.  افتح ملف `BootEase.csproj` في Visual Studio.
 3.  قم ببناء المشروع (Build Solution).
