@@ -1,0 +1,130 @@
+<Window x:Class="BootEaseSetup.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="BootEase Setup" Height="480" Width="500"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Background="#FFFFFF">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#0078D7"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="4" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#005A9E"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="#CCCCCC"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#F3F3F3" Padding="20">
+            <Grid>
+                <StackPanel>
+                    <TextBlock x:Name="TitleText" Text="BootEase Setup" FontSize="22" FontWeight="Bold" Foreground="#333"/>
+                    <TextBlock x:Name="SubtitleText" Text="Install BootEase on your computer" FontSize="14" Foreground="#666" Margin="0,5,0,0"/>
+                </StackPanel>
+                <Button x:Name="LangButton" Content="عربي" HorizontalAlignment="Right" VerticalAlignment="Top" 
+                        Background="Transparent" BorderThickness="0" Foreground="#0078D7"
+                        Cursor="Hand" Click="LangButton_Click" FontSize="12" FontWeight="SemiBold" Padding="5"/>
+            </Grid>
+        </Border>
+
+        <!-- Content -->
+        <Grid Grid.Row="1" Margin="25">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/> <!-- Path Label -->
+                <RowDefinition Height="Auto"/> <!-- Path Box -->
+                <RowDefinition Height="Auto"/> <!-- License Label -->
+                <RowDefinition Height="*"/>    <!-- License Box (Fills remaining space) -->
+                <RowDefinition Height="Auto"/> <!-- CheckBox -->
+                <RowDefinition Height="Auto"/> <!-- Uninstall Msg -->
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" x:Name="PathLabel" Text="Installation Path:" FontSize="14" FontWeight="SemiBold" Foreground="#333"/>
+            <Border Grid.Row="1" BorderBrush="#DDD" BorderThickness="1" CornerRadius="3" Margin="0,5,0,20" Padding="10">
+                <TextBlock x:Name="PathText" Text="C:\Program Files\BootEase" Foreground="#555" FontFamily="Consolas"/>
+            </Border>
+
+            <StackPanel Grid.Row="2" x:Name="LicenseLabelPanel">
+                <TextBlock x:Name="LicenseLabel" Text="License Agreement:" FontSize="14" FontWeight="SemiBold" Foreground="#333"/>
+            </StackPanel>
+
+            <Border Grid.Row="3" x:Name="LicenseScrollBorder" BorderBrush="#DDD" BorderThickness="1" CornerRadius="3" Margin="0,5,0,10">
+                <ScrollViewer Padding="10" VerticalScrollBarVisibility="Auto">
+                    <TextBlock x:Name="LicenseContentText" TextWrapping="Wrap" FontSize="12" Foreground="#444">
+                        GNU GENERAL PUBLIC LICENSE
+                        Version 3, 29 June 2007
+                        <LineBreak/><LineBreak/>
+                        Copyright (C) 2007 Free Software Foundation, Inc. &lt;https://fsf.org/&gt;
+                        <LineBreak/>
+                        Everyone is permitted to copy and distribute verbatim copies
+                        of this license document, but changing it is not allowed.
+                        <LineBreak/><LineBreak/>
+                        Preamble
+                        <LineBreak/><LineBreak/>
+                        The GNU General Public License is a free, copyleft license for
+                        software and other kinds of works.
+                        <LineBreak/><LineBreak/>
+                        The licenses for most software and other practical works are designed
+                        to take away your freedom to share and change the works.  By contrast,
+                        the GNU General Public License is intended to guarantee your freedom to
+                        share and change all versions of a program--to make sure it remains free
+                        software for all its users.  We, the Free Software Foundation, use the
+                        GNU General Public License for most of our software; it applies also to
+                        any other work released this way by its authors.  You can apply it to
+                        your programs, too.
+                        <LineBreak/><LineBreak/>
+                        (See full license in LICENSE file)
+                    </TextBlock>
+                </ScrollViewer>
+            </Border>
+            
+            <CheckBox Grid.Row="4" x:Name="AgreeCheckBox" Content="I agree to the license terms" Margin="0,5,0,0" FontSize="14" VerticalContentAlignment="Center"/>
+            
+            <TextBlock Grid.Row="5" x:Name="UninstallMessage" Text="BootEase is already installed on your system. Click 'Uninstall' to remove it." 
+                       FontSize="14" Foreground="#D83B01" Visibility="Collapsed" TextWrapping="Wrap" Margin="0,10,0,0"/>
+        </Grid>
+
+        <!-- Footer -->
+        <Border Grid.Row="2" Padding="20" Background="#FAFAFA" BorderBrush="#EEE" BorderThickness="0,1,0,0">
+            <StackPanel>
+                <ProgressBar x:Name="InstallProgress" Height="4" Margin="0,0,0,15" Visibility="Hidden" IsIndeterminate="True" Foreground="#0078D7"/>
+                
+                <Grid>
+                    <TextBlock x:Name="StatusText" Text="Ready to install" VerticalAlignment="Center" Foreground="#666"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock VerticalAlignment="Center" Margin="0,0,15,0">
+                            <Hyperlink NavigateUri="https://github.com/YOUR_USERNAME/BootEase" RequestNavigate="Hyperlink_RequestNavigate">
+                                <Run x:Name="GitHubLinkRun" Text="GitHub Repository"/>
+                            </Hyperlink>
+                        </TextBlock>
+                        <Button x:Name="ExitButton" Content="Exit" Background="#E0E0E0" Foreground="#333" Margin="0,0,10,0" Click="ExitButton_Click" Width="80"/>
+                        <Button x:Name="ActionButton" Content="Install" Width="100" Click="ActionButton_Click" IsEnabled="False"/>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
