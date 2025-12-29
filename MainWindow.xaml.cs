@@ -4,11 +4,14 @@ using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Windows;
 using System.Windows.Interop;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace BootEase
 {
     public partial class MainWindow : Window
     {
+        private const string CurrentVersion = "v1.0.0";
         private bool _isUefi = false;
         private bool _isArabic = false;
 
@@ -35,6 +38,7 @@ namespace BootEase
                 SubtitleText.Text = "أداة إعادة التشغيل إلى BIOS/UEFI البسيطة";
                 RebootButton.Content = "إعادة التشغيل والدخول للبيوس";
                 StatusText.Text = "جاري التحقق من حالة النظام...";
+                UpdateRun.Text = "تحديث متوفر!";
                 FlowDirection = FlowDirection.RightToLeft;
             }
             else
@@ -45,6 +49,7 @@ namespace BootEase
                 SubtitleText.Text = "Simple BIOS/UEFI Rebooter";
                 RebootButton.Content = "Restart & Enter BIOS";
                 StatusText.Text = "Checking system status...";
+                UpdateRun.Text = "Update Available!";
                 FlowDirection = FlowDirection.LeftToRight;
             }
 
@@ -67,6 +72,47 @@ namespace BootEase
             }
 
             CheckSystemStatus();
+            CheckForUpdates();
+        }
+
+        private async void CheckForUpdates()
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.UserAgent.ParseAdd("BootEase-App");
+                    // Timeout after 5 seconds so we don't hang if github is slow
+                    client.Timeout = TimeSpan.FromSeconds(5);
+
+                    var json = await client.GetStringAsync("https://api.github.com/repos/voidksa/BootEase/releases/latest");
+
+                    // Simple parsing to find tag_name
+                    // JSON format: ... "tag_name": "v1.1.0", ...
+                    var tagKey = "\"tag_name\":";
+                    var tagIndex = json.IndexOf(tagKey);
+                    if (tagIndex == -1) return;
+
+                    var startQuote = json.IndexOf("\"", tagIndex + tagKey.Length);
+                    var endQuote = json.IndexOf("\"", startQuote + 1);
+
+                    if (startQuote != -1 && endQuote != -1)
+                    {
+                        var latestVersion = json.Substring(startQuote + 1, endQuote - startQuote - 1); // e.g., v1.1.0
+
+                        // Compare versions (simple string compare works if format is consistently vX.Y.Z)
+                        // If latestVersion > CurrentVersion
+                        if (string.Compare(latestVersion, CurrentVersion, StringComparison.OrdinalIgnoreCase) > 0)
+                        {
+                            UpdateText.Visibility = Visibility.Visible;
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                // Ignore update errors (offline, api limits, etc) 
+            }
         }
 
         private void CheckSystemStatus()
