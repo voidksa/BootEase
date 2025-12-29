@@ -6,6 +6,12 @@
   <p><b>One-Click BIOS/UEFI Entry Utility for Windows</b></p>
   
   <p>
+    <a href="https://github.com/voidksa/BootEase/releases/latest">
+      <img src="https://img.shields.io/github/v/release/voidksa/BootEase?style=for-the-badge&label=Download%20Latest&color=success" alt="Download Latest Release" />
+    </a>
+  </p>
+
+  <p>
     <a href="README.md">English</a> | <a href="README_AR.md">العربية</a>
   </p>
 </div>
