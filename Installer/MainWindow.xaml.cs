@@ -224,9 +224,26 @@ Version 3, 29 June 2007
 
             // 2. Extract Embedded Resource
             var assembly = Assembly.GetExecutingAssembly();
-            using (Stream? stream = assembly.GetManifestResourceStream("BootEaseSetup.BootEase.exe"))
+
+            // Determine the correct resource name
+            string resourceName = "BootEaseSetup.BootEase.exe";
+            if (assembly.GetManifestResourceStream(resourceName) == null)
             {
-                if (stream == null) throw new Exception("Embedded resource not found. Check resource name.");
+                // Fallback: Find any resource ending with BootEase.exe
+                var allResources = assembly.GetManifestResourceNames();
+                var foundName = Array.Find(allResources, r => r.EndsWith("BootEase.exe"));
+                if (foundName != null)
+                {
+                    resourceName = foundName;
+                }
+            }
+
+            using (Stream? stream = assembly.GetManifestResourceStream(resourceName))
+            {
+                if (stream == null)
+                {
+                    throw new Exception($"Embedded resource 'BootEase.exe' not found inside installer.\nAvailable resources:\n{string.Join("\n", assembly.GetManifestResourceNames())}");
+                }
 
                 using (FileStream fileStream = new FileStream(_exePath, FileMode.Create, FileAccess.Write))
                 {
