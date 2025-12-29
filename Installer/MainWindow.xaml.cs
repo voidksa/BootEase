@@ -16,6 +16,56 @@ namespace BootEaseSetup
         private string _exePath;
         private bool _isArabic = false;
 
+        private const string LicenseEnglish = @"IMPORTANT: READ CAREFULLY
+
+This software is protected under the GNU General Public License v3.0 (GPLv3) with ADDITIONAL ATTRIBUTION TERMS.
+
+1. You are free to USE, MODIFY, and DISTRIBUTE this software.
+2. You MUST NOT remove the original author's credits or the GitHub repository link.
+3. You MUST NOT misrepresent modified versions as the ""Official"" version.
+4. Any modifications MUST remain Open Source under GPLv3.
+
+----------------------------------------------------------
+GNU GENERAL PUBLIC LICENSE
+Version 3, 29 June 2007
+
+Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
+Everyone is permitted to copy and distribute verbatim copies
+of this license document, but changing it is not allowed.
+
+Preamble
+
+The GNU General Public License is a free, copyleft license for
+software and other kinds of works.
+
+The licenses for most software and other practical works are designed
+to take away your freedom to share and change the works.  By contrast,
+the GNU General Public License is intended to guarantee your freedom to
+share and change all versions of a program--to make sure it remains free
+software for all its users.";
+
+        private const string LicenseArabic = @"هام جداً: اقرأ بعناية
+
+هذا البرنامج محمي بموجب رخصة GNU General Public License v3.0 (GPLv3) مع شروط إضافية للحقوق.
+
+1. لك كامل الحرية في استخدام، وتعديل، وتوزيع هذا البرنامج.
+2. يمنع منعاً باتاً إزالة اسم المطور الأصلي أو رابط مستودع GitHub.
+3. يمنع تقديم النسخ المعدلة على أنها ""النسخة الرسمية"".
+4. أي تعديلات يجب أن تبقى مفتوحة المصدر تحت نفس رخصة GPLv3.
+
+----------------------------------------------------------
+GNU GENERAL PUBLIC LICENSE
+Version 3, 29 June 2007
+
+حقوق النشر (C) 2007 مؤسسة البرمجيات الحرة، Inc. <https://fsf.org/>
+يسمح للجميع بنسخ وتوزيع نسخ حرفية من وثيقة الترخيص هذه، ولكن لا يسمح بتغييرها.
+
+المقدمة
+
+رخصة جنو العمومية هي رخصة حرة الحقوق المتروكة (Copyleft) للبرمجيات وغيرها من الأعمال.
+
+تم تصميم تراخيص معظم البرمجيات لتسلبك حريتك في مشاركة وتغيير الأعمال. في المقابل، تهدف رخصة جنو العمومية إلى ضمان حريتك في مشاركة وتغيير جميع إصدارات البرنامج--للتأكد من أنه يظل برمجية حرة لجميع مستخدميه.";
+
         public MainWindow()
         {
             InitializeComponent();
@@ -51,6 +101,7 @@ namespace BootEaseSetup
                 ExitButton.Content = "خروج";
                 GitHubLinkRun.Text = "مستودع GitHub";
                 FlowDirection = FlowDirection.RightToLeft;
+                LicenseContentText.Text = LicenseArabic;
             }
             else
             {
@@ -64,6 +115,7 @@ namespace BootEaseSetup
                 ExitButton.Content = "Exit";
                 GitHubLinkRun.Text = "GitHub Repository";
                 FlowDirection = FlowDirection.LeftToRight;
+                LicenseContentText.Text = LicenseEnglish;
             }
 
             CheckInstallationStatus(); // Refresh status text
