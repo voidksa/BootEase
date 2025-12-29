@@ -35,16 +35,18 @@ You can download the latest installer from the [Releases](https://github.com/voi
 3. You can switch the installer language (English/Arabic) using the button in the top corner.
 4. Launch **BootEase** from your desktop or start menu.
 
-## ⚖️ License & Legal
+## ⚖️ License & Attribution (Important)
 
-**This project is protected under the GNU General Public License v3.0 (GPLv3).**
+**This project is protected under the GNU General Public License v3.0 (GPLv3) with additional attribution terms.**
 
-### What this means:
-- ✅ **You CAN**: Use this software, modify it, fork it, and distribute your own versions.
-- ❌ **You CANNOT**: Close the source code. Any modifications or forks **MUST** remain open-source under the same GPLv3 license.
-- ❌ **You CANNOT**: Sell this software as a proprietary product without providing the source code.
+### Terms of Use & Modification:
+1.  ✅ **Right to Modify:** You are free to fork, modify, and improve the source code.
+2.  ✅ **Contributor Credit:** You may add your name as a "Contributor" or "Modifier" to your own forked version.
+3.  ⛔ **Mandatory Attribution:** You **MUST NOT** remove the original repository link (GitHub) or the original author's name from the software UI or documentation.
+4.  ⛔ **No Impersonation:** You cannot present a fork as the "Official Version" or claim original ownership. Forks must be clearly labeled as **"Unofficial / Modified"**.
+5.  ⛔ **Stay Open:** Any modifications must remain Open Source under GPLv3. You cannot close the source or sell it as a proprietary product.
 
-This ensures that **BootEase** remains free and open for everyone.
+**In short:** Fork and improve as you wish, but do not steal credit, and keep the original source link visible.
 
 ## 🏗️ Build from Source
 
