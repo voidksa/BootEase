@@ -5,32 +5,52 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BootEase"
         mc:Ignorable="d"
-        Title="BootEase" Height="300" Width="400"
+        Title="BootEase" SizeToContent="Height" Width="450"
         ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
-        Background="#F5F5F5">
+        Background="{DynamicResource WindowBackgroundBrush}"
+        Loaded="MainWindow_Loaded">
     <Window.Resources>
+        <!-- Theme Brushes -->
+        <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#F5F5F5"/>
+        <SolidColorBrush x:Key="CardBackgroundBrush" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="TextPrimaryBrush" Color="#333333"/>
+        <SolidColorBrush x:Key="TextSecondaryBrush" Color="#666666"/>
+        <SolidColorBrush x:Key="BorderBrush" Color="#DDDDDD"/>
+        <SolidColorBrush x:Key="AccentBrush" Color="#0078D7"/>
+
+        <!-- Vector Icons (Fluent UI Style) -->
+        <!-- Moon (Dark Mode) -->
+        <Geometry x:Key="MoonIcon">M12,22C17.52,22 22,17.52 22,12C22,11.53 21.96,11.07 21.89,10.61C21.73,9.58 20.48,9.17 19.83,9.91C18.25,11.71 15.93,12.86 13.33,12.86C8.75,12.86 5.04,9.14 5.04,4.57C5.04,2.78 5.7,1.14 6.81,0.18C7.54,-0.47 7.13,-1.73 6.11,-1.89C5.65,-1.96 5.18,-2 4.71,-2C-0.81,-2 -5.29,2.48 -5.29,8C-5.29,13.52 -0.81,18 4.71,18C5.18,18 5.65,17.96 6.11,17.89L12,22Z</Geometry>
+        <Geometry x:Key="MoonIconFluent">M10 2c-1.82 0-3.53.5-5 1.35C7.99 5.08 10 8.3 10 12s-2.01 6.92-5 8.65C6.47 21.5 8.18 22 10 22c5.52 0 10-4.48 10-10S15.52 2 10 2z</Geometry>
+        
+        <!-- Sun (Light Mode) -->
+        <Geometry x:Key="SunIcon">M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,2A1,1 0 0,1 13,3V4A1,1 0 0,1 12,5A1,1 0 0,1 11,4V3A1,1 0 0,1 12,2M12,20A1,1 0 0,1 13,21V22A1,1 0 0,1 12,23A1,1 0 0,1 11,22V21A1,1 0 0,1 12,20M19.07,4.93L19.78,4.22A1,1 0 0,1 21.19,5.64L20.49,6.34A1,1 0 0,1 19.07,4.93M4.22,19.78L3.51,20.49A1,1 0 0,1 2.1,19.07L2.81,18.36A1,1 0 0,1 4.22,19.78M22,12A1,1 0 0,1 21,13H20A1,1 0 0,1 19,12A1,1 0 0,1 20,11H21A1,1 0 0,1 22,12M5,12A1,1 0 0,1 4,13H3A1,1 0 0,1 2,12A1,1 0 0,1 3,11H4A1,1 0 0,1 5,12M19.07,19.07A1,1 0 0,1 20.49,17.66L21.19,18.36A1,1 0 0,1 19.78,19.78L19.07,19.07M4.22,4.22A1,1 0 0,1 2.81,5.64L2.1,4.93A1,1 0 0,1 3.51,3.51L4.22,4.22Z</Geometry>
+        <Geometry x:Key="SunIconFluent">M12 6c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6 2.69-6 6-6zm0-4c.55 0 1 .45 1 1v1c0 .55-.45 1-1 1s-1-.45-1-1V3c0-.55.45-1 1-1zm0 18c.55 0 1 .45 1 1v1c0 .55-.45 1-1 1s-1-.45-1-1v-1c0-.55.45-1 1-1zm8.49-14.49c.55 0 1 .45 1 1l-.01.01-1 1c-.39.39-1.01.39-1.4 0-.39-.39-.39-1.02 0-1.41l1-1c.38-.38 1.02-.38 1.41 0zm-15 15c.55 0 1 .45 1 1l-.01.01-1 1c-.39.39-1.01.39-1.4 0-.39-.39-.39-1.02 0-1.41l1-1c.38-.38 1.02-.38 1.41 0zM22 11c.55 0 1 .45 1 1s-.45 1-1 1h-1c-.55 0-1-.45-1-1s.45-1 1-1h1zM4 11c.55 0 1 .45 1 1s-.45 1-1 1H3c-.55 0-1-.45-1-1s.45-1 1-1h1zm15.49 8.49c.39 0 1.02.01 1.41.4.39.39.39 1.02 0 1.41l-1 1c-.39.39-1.02.39-1.41 0-.39-.39-.4-1.01-.01-1.41l1-1 .01-.4zM5.5 4.09c.39 0 1.02.01 1.41.4.39.39.39 1.02 0 1.41l-1 1c-.39.39-1.02.39-1.41 0-.39-.39-.4-1.01-.01-1.41l1-1 .01-.4z</Geometry>
+        <!-- Refresh -->
+        <Geometry x:Key="RefreshIcon">M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z</Geometry>
+        
         <Style x:Key="ModernButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#0078D7"/>
+            <Setter Property="Background" Value="{DynamicResource AccentBrush}"/>
             <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="10,8"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="5" Padding="{TemplateBinding Padding}">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="5" Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#005A9E"/>
+                                <Setter TargetName="border" Property="Background" Value="#005A9E"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#004578"/>
+                                <Setter TargetName="border" Property="Background" Value="#004578"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Background" Value="#CCCCCC"/>
+                                <Setter TargetName="border" Property="Background" Value="#CCCCCC"/>
                                 <Setter Property="Foreground" Value="#888888"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
@@ -38,47 +58,160 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style x:Key="IconButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="4" Padding="{TemplateBinding Padding}">
+                            <Path x:Name="iconPath" Data="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" 
+                                  Fill="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}" 
+                                  Stretch="Uniform" Width="18" Height="18"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#15000000"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#30000000"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CardStyle" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource CardBackgroundBrush}"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="1" Color="#AAAAAA" Opacity="0.15"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="InfoLabelStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        
+        <Style x:Key="InfoValueStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+        </Style>
     </Window.Resources>
     
-    <Grid Margin="20">
+    <Grid Margin="25" VerticalAlignment="Top">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/> <!-- Header -->
+            <RowDefinition Height="Auto"/> <!-- System Info -->
+            <RowDefinition Height="Auto"/> <!-- Actions -->
+            <RowDefinition Height="20"/>   <!-- Spacer -->
+            <RowDefinition Height="Auto"/> <!-- Footer -->
         </Grid.RowDefinitions>
 
-        <!-- Language Button Container -->
-        <Grid Grid.Row="0">
-             <Button x:Name="LangButton" Content="عربي" HorizontalAlignment="Right" VerticalAlignment="Top" 
-                Margin="0,-10,-10,0" Padding="8,4" Background="Transparent" BorderThickness="0" Foreground="#0078D7"
-                Cursor="Hand" Click="LangButton_Click" FontSize="12" FontWeight="SemiBold"/>
+        <!-- Header -->
+        <Grid Grid.Row="0" Margin="0,0,0,25">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel Grid.Column="0">
+                <TextBlock x:Name="AppTitleText" Text="BootEase" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                <TextBlock x:Name="SubtitleText" Text="System &amp; BIOS Utility" FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,2,0,0"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top">
+                <Button x:Name="ThemeButton" Content="{StaticResource MoonIcon}" Style="{StaticResource IconButtonStyle}"
+                        Foreground="{DynamicResource TextPrimaryBrush}" Click="ThemeButton_Click" ToolTip="Toggle Dark Mode" Margin="0,0,5,0"/>
+                <Button x:Name="CheckUpdateBtn" Content="{StaticResource RefreshIcon}" Style="{StaticResource IconButtonStyle}"
+                        Foreground="{DynamicResource TextPrimaryBrush}" Click="CheckUpdateBtn_Click" ToolTip="Check for Updates" Margin="0,0,5,0"/>
+                <Button x:Name="LangButton" Content="عربي" Background="Transparent" Foreground="{DynamicResource AccentBrush}" 
+                        BorderThickness="0" Click="LangButton_Click" FontWeight="Bold" FontSize="14" Cursor="Hand" Padding="5"/>
+            </StackPanel>
         </Grid>
 
-        <StackPanel Grid.Row="0" HorizontalAlignment="Center" Margin="0,10,0,20">
-            <TextBlock x:Name="AppTitleText" Text="BootEase" FontSize="24" FontWeight="Bold" Foreground="#333" HorizontalAlignment="Center"/>
-            <TextBlock x:Name="SubtitleText" Text="Simple BIOS/UEFI Rebooter" FontSize="14" Foreground="#666" HorizontalAlignment="Center" Margin="0,5,0,0"/>
-        </StackPanel>
+        <!-- System Info Card -->
+        <Border Grid.Row="1" Style="{StaticResource CardStyle}">
+            <StackPanel>
+                <TextBlock x:Name="SysInfoTitle" Text="System Information" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource AccentBrush}" Margin="0,0,0,12"/>
+                
+                <Grid Margin="0,0,0,10">
+                    <TextBlock x:Name="LblModel" Text="Model:" Style="{StaticResource InfoLabelStyle}"/>
+                    <TextBlock x:Name="ValModel" Text="Loading..." Style="{StaticResource InfoValueStyle}"/>
+                </Grid>
+                <Separator Background="{DynamicResource BorderBrush}" Margin="0,0,0,10"/>
+                
+                <Grid Margin="0,0,0,10">
+                    <TextBlock x:Name="LblBiosVer" Text="BIOS Version:" Style="{StaticResource InfoLabelStyle}"/>
+                    <TextBlock x:Name="ValBiosVer" Text="Loading..." Style="{StaticResource InfoValueStyle}"/>
+                </Grid>
+                <Separator Background="{DynamicResource BorderBrush}" Margin="0,0,0,10"/>
+                
+                <Grid Margin="0,0,0,10">
+                    <TextBlock x:Name="LblBiosMode" Text="BIOS Mode:" Style="{StaticResource InfoLabelStyle}"/>
+                    <TextBlock x:Name="ValBiosMode" Text="Loading..." Style="{StaticResource InfoValueStyle}"/>
+                </Grid>
+                <Separator Background="{DynamicResource BorderBrush}" Margin="0,0,0,10"/>
+                
+                <Grid>
+                    <TextBlock x:Name="LblSecureBoot" Text="Secure Boot:" Style="{StaticResource InfoLabelStyle}"/>
+                    <TextBlock x:Name="ValSecureBoot" Text="Loading..." Style="{StaticResource InfoValueStyle}"/>
+                </Grid>
+            </StackPanel>
+        </Border>
 
-        <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <TextBlock x:Name="StatusText" Text="Checking system status..." FontSize="14" Foreground="#333" TextWrapping="Wrap" TextAlignment="Center" Margin="0,0,0,20"/>
+        <!-- Actions Card -->
+        <Border Grid.Row="2" Style="{StaticResource CardStyle}">
+            <StackPanel>
+                <TextBlock x:Name="ActionsTitle" Text="Power Options" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource AccentBrush}" Margin="0,0,0,12"/>
+                
+                <TextBlock x:Name="LblAction" Text="Select Action:" Style="{StaticResource InfoLabelStyle}" Margin="0,0,0,8"/>
+                <ComboBox x:Name="ActionCombo" Margin="0,0,0,18" Padding="8" SelectedIndex="0" SelectionChanged="ActionCombo_SelectionChanged" Height="35">
+                    <ComboBoxItem Content="Restart to BIOS/UEFI" Tag="bios"/>
+                    <ComboBoxItem Content="Restart to Recovery (Safe Mode)" Tag="recovery"/>
+                    <ComboBoxItem Content="Restart Explorer (Fix UI)" Tag="explorer"/>
+                    <ComboBoxItem Content="Normal Restart" Tag="restart"/>
+                </ComboBox>
+                
+                <Button x:Name="ExecuteButton" Content="Execute Action" Style="{StaticResource ModernButtonStyle}" 
+                        Height="45" Click="ExecuteButton_Click"/>
+                
+                <TextBlock x:Name="ActionDesc" Text="Reboots directly into BIOS setup." 
+                           FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" 
+                           TextWrapping="Wrap" Margin="0,12,0,0" HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Footer -->
+        <Grid Grid.Row="4">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <TextBlock FontSize="12">
+                     <Hyperlink NavigateUri="https://github.com/voidksa/BootEase" RequestNavigate="Hyperlink_RequestNavigate" Foreground="{DynamicResource AccentBrush}">
+                         GitHub
+                     </Hyperlink>
+                </TextBlock>
+            </StackPanel>
             
-            <Button x:Name="RebootButton" Content="Restart &amp; Enter BIOS" Style="{StaticResource ModernButtonStyle}" 
-                    Click="RebootButton_Click" MinWidth="200" Width="Auto" Padding="20,0" Height="45"/>
-        </StackPanel>
-
-        <Grid Grid.Row="2">
-            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="12">
-                 <Hyperlink NavigateUri="https://github.com/voidksa/BootEase" RequestNavigate="Hyperlink_RequestNavigate">
-                     GitHub
-                 </Hyperlink>
-            </TextBlock>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                <TextBlock x:Name="UpdateText" Visibility="Collapsed" Margin="0,0,10,0" FontSize="11">
+                <TextBlock x:Name="UpdateText" Visibility="Collapsed" Margin="0,0,10,0" FontSize="12">
                     <Hyperlink NavigateUri="https://github.com/voidksa/BootEase/releases/latest" RequestNavigate="Hyperlink_RequestNavigate" Foreground="Red" FontWeight="Bold">
                         <Run x:Name="UpdateRun" Text="Update Available!"/>
                     </Hyperlink>
                 </TextBlock>
-                <TextBlock x:Name="VersionText" Text="v1.0.0" FontSize="10" Foreground="#999"/>
+                <TextBlock x:Name="VersionText" Text="v1.1.0" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}"/>
             </StackPanel>
         </Grid>
     </Grid>

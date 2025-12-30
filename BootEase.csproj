@@ -10,12 +10,17 @@
     <Authors>BootEase</Authors>
     <Description>Simple BIOS/UEFI Rebooter</Description>
     <ApplicationIcon>app.ico</ApplicationIcon>
+    <Version>1.1.0</Version>
     <!-- Force Single File & Embed Native Libs -->
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>true</SelfContained>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Management" Version="8.0.0" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="Installer\**" />

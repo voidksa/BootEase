@@ -1,94 +1,403 @@
 using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Security.Principal;
-using System.Windows;
-using System.Windows.Interop;
+using System.IO;
+using System.Management;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Navigation;
+using Microsoft.Win32;
+
+using System.Runtime.InteropServices;
+using System.Windows.Interop;
 
 namespace BootEase
 {
     public partial class MainWindow : Window
     {
-        private const string CurrentVersion = "v1.0.0";
-        private bool _isUefi = false;
         private bool _isArabic = false;
+        private bool _isDarkMode = false;
+        private const string CurrentVersion = "v1.1.0";
+        private readonly string _configPath;
 
         public MainWindow()
         {
             InitializeComponent();
+            VersionText.Text = CurrentVersion;
 
-            // Check for Arabic language
+            // Setup Config Path
+            string appData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "BootEase");
+            if (!Directory.Exists(appData)) Directory.CreateDirectory(appData);
+            _configPath = Path.Combine(appData, "config.txt");
+
+            // Auto-detect language
             var lang = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
             _isArabic = lang == "ar";
-
             ApplyLocalization();
 
-            Loaded += MainWindow_Loaded;
+            // Setup Theme
+            LoadSettings();
         }
 
-        private void ApplyLocalization()
+        private void LoadSettings()
         {
-            if (_isArabic)
+            bool systemUsesDark = false;
+            try
             {
-                // Arabic
-                LangButton.Content = "English";
-                AppTitleText.Text = "BootEase"; // Name stays same
-                SubtitleText.Text = "أداة إعادة التشغيل إلى BIOS/UEFI البسيطة";
-                RebootButton.Content = "إعادة التشغيل والدخول للبيوس";
-                StatusText.Text = "جاري التحقق من حالة النظام...";
-                UpdateRun.Text = "تحديث متوفر!";
-                FlowDirection = FlowDirection.RightToLeft;
+                using (var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"))
+                {
+                    if (key != null)
+                    {
+                        var val = key.GetValue("AppsUseLightTheme");
+                        if (val != null)
+                        {
+                            systemUsesDark = (int)val == 0;
+                        }
+                    }
+                }
+            }
+            catch { }
+
+            _isDarkMode = systemUsesDark;
+
+            // Override from config if exists
+            if (File.Exists(_configPath))
+            {
+                try
+                {
+                    string content = File.ReadAllText(_configPath);
+                    if (content.Contains("Theme=Dark")) _isDarkMode = true;
+                    else if (content.Contains("Theme=Light")) _isDarkMode = false;
+
+                    if (content.Contains("Language=Ar")) _isArabic = true;
+                    else if (content.Contains("Language=En")) _isArabic = false;
+                }
+                catch { }
+            }
+
+            ApplyTheme();
+            ApplyLocalization();
+        }
+
+        private void SaveSettings()
+        {
+            try
+            {
+                string theme = _isDarkMode ? "Dark" : "Light";
+                string lang = _isArabic ? "Ar" : "En";
+                File.WriteAllText(_configPath, $"Theme={theme}\nLanguage={lang}");
+            }
+            catch { }
+        }
+
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+            ApplyTheme();
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            LoadSystemInfo();
+            CheckForUpdates();
+        }
+
+        private async void LoadSystemInfo()
+        {
+            try
+            {
+                await Task.Run(() =>
+                {
+                    string model = "Unknown";
+                    string biosVer = "Unknown";
+                    string biosMode = "Legacy";
+                    string secureBoot = "Disabled";
+
+                    // 1. Get Model & Manufacturer
+                    try
+                    {
+                        using (var searcher = new ManagementObjectSearcher("SELECT Manufacturer, Model FROM Win32_ComputerSystem"))
+                        {
+                            foreach (ManagementObject obj in searcher.Get())
+                            {
+                                model = $"{obj["Manufacturer"]} {obj["Model"]}";
+                            }
+                        }
+                    }
+                    catch { }
+
+                    // 2. Get BIOS Version
+                    try
+                    {
+                        using (var searcher = new ManagementObjectSearcher("SELECT SMBIOSBIOSVersion FROM Win32_BIOS"))
+                        {
+                            foreach (ManagementObject obj in searcher.Get())
+                            {
+                                biosVer = obj["SMBIOSBIOSVersion"]?.ToString() ?? "Unknown";
+                            }
+                        }
+                    }
+                    catch { }
+
+                    // 3. Get Secure Boot Status
+                    try
+                    {
+                        using (var key = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\SecureBoot\State"))
+                        {
+                            if (key != null)
+                            {
+                                int sb = (int)(key.GetValue("UEFISecureBootEnabled") ?? 0);
+                                secureBoot = sb == 1 ? "Enabled" : "Disabled";
+                            }
+                        }
+                    }
+                    catch { }
+
+                    // 4. Check UEFI vs Legacy
+                    if (secureBoot == "Enabled") biosMode = "UEFI";
+                    else
+                    {
+                        try
+                        {
+                            if (Directory.Exists(Path.Combine(Environment.GetEnvironmentVariable("SystemRoot"), "Firmware")))
+                                biosMode = "UEFI";
+                        }
+                        catch { }
+                    }
+
+                    // Update UI
+                    Dispatcher.Invoke(() =>
+                    {
+                        ValModel.Text = model;
+                        ValBiosVer.Text = biosVer;
+                        ValBiosMode.Text = biosMode;
+                        ValSecureBoot.Text = secureBoot;
+
+                        if (secureBoot == "Enabled") ValSecureBoot.Foreground = Brushes.Green;
+                        else ValSecureBoot.Foreground = Brushes.Red;
+                    });
+                });
+            }
+            catch
+            {
+                // Ignore errors
+            }
+        }
+
+        private void ExecuteButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ActionCombo.SelectedItem is ComboBoxItem selectedItem && selectedItem.Tag != null)
+            {
+                string tag = selectedItem.Tag.ToString();
+                string args = "";
+
+                switch (tag)
+                {
+                    case "bios":
+                        args = "/r /fw /t 0";
+                        break;
+                    case "recovery":
+                        args = "/r /o /t 0";
+                        break;
+                    case "restart":
+                        args = "/r /t 0";
+                        break;
+                    case "explorer":
+                        RestartExplorer();
+                        return;
+                }
+
+                if (!string.IsNullOrEmpty(args))
+                {
+                    try
+                    {
+                        Process.Start(new ProcessStartInfo("shutdown", args)
+                        {
+                            CreateNoWindow = true,
+                            UseShellExecute = true,
+                            Verb = "runas"
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(_isArabic ? $"خطأ: {ex.Message}" : $"Error: {ex.Message}", "BootEase", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+        }
+
+        private void RestartExplorer()
+        {
+            try
+            {
+                foreach (var proc in Process.GetProcessesByName("explorer"))
+                {
+                    proc.Kill();
+                }
+                Process.Start(Environment.GetEnvironmentVariable("WINDIR") + "\\explorer.exe");
+            }
+            catch { }
+        }
+
+        private void ActionCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ActionDesc == null) return;
+
+            if (ActionCombo.SelectedItem is ComboBoxItem selectedItem && selectedItem.Tag != null)
+            {
+                string tag = selectedItem.Tag.ToString();
+                if (_isArabic)
+                {
+                    switch (tag)
+                    {
+                        case "bios": ActionDesc.Text = "إعادة التشغيل والدخول مباشرة لإعدادات البيوس."; break;
+                        case "recovery": ActionDesc.Text = "إعادة التشغيل إلى قائمة الاسترداد (للوضع الآمن وغيره)."; break;
+                        case "restart": ActionDesc.Text = "إعادة تشغيل عادية للجهاز."; break;
+                        case "explorer": ActionDesc.Text = "إعادة تشغيل واجهة سطح المكتب فقط (بدون ريستارت)."; break;
+                    }
+                }
+                else
+                {
+                    switch (tag)
+                    {
+                        case "bios": ActionDesc.Text = "Reboots directly into BIOS/UEFI setup."; break;
+                        case "recovery": ActionDesc.Text = "Reboots to Recovery Menu (Safe Mode, etc)."; break;
+                        case "restart": ActionDesc.Text = "Perform a normal system restart."; break;
+                        case "explorer": ActionDesc.Text = "Restarts Windows Explorer UI only."; break;
+                    }
+                }
+            }
+        }
+
+        private void ThemeButton_Click(object sender, RoutedEventArgs e)
+        {
+            _isDarkMode = !_isDarkMode;
+            ApplyTheme();
+            SaveSettings();
+        }
+
+        [System.Runtime.InteropServices.DllImport("dwmapi.dll")]
+        private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
+        private const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
+
+        private void ApplyTheme()
+        {
+            var moonIcon = (Geometry)FindResource("MoonIconFluent");
+            var sunIcon = (Geometry)FindResource("SunIconFluent");
+
+            // Apply Title Bar Theme (DWM)
+            try
+            {
+                if (PresentationSource.FromVisual(this) is HwndSource source)
+                {
+                    int useDarkMode = _isDarkMode ? 1 : 0;
+                    DwmSetWindowAttribute(source.Handle, DWMWA_USE_IMMERSIVE_DARK_MODE, ref useDarkMode, sizeof(int));
+                }
+            }
+            catch { }
+
+            if (_isDarkMode)
+            {
+                // Dark Theme
+                Resources["WindowBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#202020"));
+                Resources["CardBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2D2D2D"));
+                Resources["TextPrimaryBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFF"));
+                Resources["TextSecondaryBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#AAAAAA"));
+                Resources["BorderBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#404040"));
+
+                ThemeButton.Content = sunIcon;
             }
             else
             {
-                // English
-                LangButton.Content = "عربي";
-                AppTitleText.Text = "BootEase";
-                SubtitleText.Text = "Simple BIOS/UEFI Rebooter";
-                RebootButton.Content = "Restart & Enter BIOS";
-                StatusText.Text = "Checking system status...";
-                UpdateRun.Text = "Update Available!";
-                FlowDirection = FlowDirection.LeftToRight;
-            }
+                // Light Theme
+                Resources["WindowBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F5F5F5"));
+                Resources["CardBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFF"));
+                Resources["TextPrimaryBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#333333"));
+                Resources["TextSecondaryBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#666666"));
+                Resources["BorderBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#DDDDDD"));
 
-            // Re-check system status to update the status text in the correct language
-            if (IsLoaded) CheckSystemStatus();
+                ThemeButton.Content = moonIcon;
+            }
         }
 
         private void LangButton_Click(object sender, RoutedEventArgs e)
         {
             _isArabic = !_isArabic;
             ApplyLocalization();
+            SaveSettings();
         }
 
-        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        private void ApplyLocalization()
         {
-            if (!IsAdministrator())
+            if (_isArabic)
             {
-                RestartAsAdmin();
-                return;
+                FlowDirection = FlowDirection.RightToLeft;
+                LangButton.Content = "English";
+                SubtitleText.Text = "أداة النظام والبيوس";
+                SysInfoTitle.Text = "معلومات النظام";
+                LblModel.Text = "الموديل:";
+                LblBiosVer.Text = "إصدار البيوس:";
+                LblBiosMode.Text = "نمط البيوس:";
+                LblSecureBoot.Text = "الإقلاع الآمن:";
+
+                ActionsTitle.Text = "خيارات الطاقة";
+                LblAction.Text = "اختر إجراء:";
+                ExecuteButton.Content = "تنفيذ";
+
+                ((ComboBoxItem)ActionCombo.Items[0]).Content = "إعادة التشغيل إلى BIOS / UEFI";
+                ((ComboBoxItem)ActionCombo.Items[1]).Content = "إعادة التشغيل إلى وضع الاسترداد (Safe Mode)";
+                ((ComboBoxItem)ActionCombo.Items[2]).Content = "إعادة تشغيل Explorer (إصلاح الواجهة)";
+                ((ComboBoxItem)ActionCombo.Items[3]).Content = "إعادة تشغيل عادية";
+
+                UpdateRun.Text = "تحديث متوفر!";
+            }
+            else
+            {
+                FlowDirection = FlowDirection.LeftToRight;
+                LangButton.Content = "عربي";
+                SubtitleText.Text = "System & BIOS Utility";
+                SysInfoTitle.Text = "System Information";
+                LblModel.Text = "Model:";
+                LblBiosVer.Text = "BIOS Version:";
+                LblBiosMode.Text = "BIOS Mode:";
+                LblSecureBoot.Text = "Secure Boot:";
+
+                ActionsTitle.Text = "Power Options";
+                LblAction.Text = "Select Action:";
+                ExecuteButton.Content = "Execute Action";
+
+                ((ComboBoxItem)ActionCombo.Items[0]).Content = "Restart to BIOS/UEFI";
+                ((ComboBoxItem)ActionCombo.Items[1]).Content = "Restart to Recovery (Safe Mode)";
+                ((ComboBoxItem)ActionCombo.Items[2]).Content = "Restart Explorer (Fix UI)";
+                ((ComboBoxItem)ActionCombo.Items[3]).Content = "Normal Restart";
+
+                UpdateRun.Text = "Update Available!";
             }
 
-            CheckSystemStatus();
-            CheckForUpdates();
+            // Trigger description update
+            ActionCombo_SelectionChanged(null, null);
         }
 
-        private async void CheckForUpdates()
+        private void CheckUpdateBtn_Click(object sender, RoutedEventArgs e)
+        {
+            CheckForUpdates(true);
+        }
+
+        private async void CheckForUpdates(bool manual = false)
         {
             try
             {
+                if (manual) CheckUpdateBtn.IsEnabled = false;
+
                 using (var client = new HttpClient())
                 {
                     client.DefaultRequestHeaders.UserAgent.ParseAdd("BootEase-App");
-                    // Timeout after 5 seconds so we don't hang if github is slow
                     client.Timeout = TimeSpan.FromSeconds(5);
 
                     var json = await client.GetStringAsync("https://api.github.com/repos/voidksa/BootEase/releases/latest");
 
-                    // Simple parsing to find tag_name
-                    // JSON format: ... "tag_name": "v1.1.0", ...
                     var tagKey = "\"tag_name\":";
                     var tagIndex = json.IndexOf(tagKey);
                     if (tagIndex == -1) return;
@@ -98,138 +407,30 @@ namespace BootEase
 
                     if (startQuote != -1 && endQuote != -1)
                     {
-                        var latestVersion = json.Substring(startQuote + 1, endQuote - startQuote - 1); // e.g., v1.1.0
-
-                        // Compare versions (simple string compare works if format is consistently vX.Y.Z)
-                        // If latestVersion > CurrentVersion
+                        var latestVersion = json.Substring(startQuote + 1, endQuote - startQuote - 1);
                         if (string.Compare(latestVersion, CurrentVersion, StringComparison.OrdinalIgnoreCase) > 0)
                         {
                             UpdateText.Visibility = Visibility.Visible;
+                            if (manual) MessageBox.Show(_isArabic ? "يوجد تحديث جديد!" : "New update available!", "BootEase", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                        else
+                        {
+                            if (manual) MessageBox.Show(_isArabic ? "أنت تستخدم أحدث إصدار." : "You are using the latest version.", "BootEase", MessageBoxButton.OK, MessageBoxImage.Information);
                         }
                     }
                 }
             }
             catch
             {
-                // Ignore update errors (offline, api limits, etc) 
+                if (manual) MessageBox.Show(_isArabic ? "فشل التحقق من التحديثات." : "Failed to check for updates.", "BootEase", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                if (manual) CheckUpdateBtn.IsEnabled = true;
             }
         }
 
-        private void CheckSystemStatus()
-        {
-            try
-            {
-                if (IsUefiSystem())
-                {
-                    _isUefi = true;
-                    StatusText.Text = _isArabic
-                        ? "النظام جاهز. تم اكتشاف UEFI."
-                        : "System is ready. UEFI detected.";
-                    RebootButton.IsEnabled = true;
-                }
-                else
-                {
-                    _isUefi = false;
-                    StatusText.Text = _isArabic
-                        ? "تم اكتشاف Legacy BIOS.\nلا يمكن الدخول تلقائياً للإعدادات في هذا النظام."
-                        : "Legacy BIOS detected.\nWindows cannot automatically enter BIOS settings on Legacy systems.";
-                    RebootButton.IsEnabled = false;
-                }
-            }
-            catch (Exception ex)
-            {
-                StatusText.Text = _isArabic
-                    ? $"خطأ في اكتشاف نوع النظام: {ex.Message}"
-                    : $"Error detecting system type: {ex.Message}";
-                RebootButton.IsEnabled = false;
-            }
-        }
-
-        private void RebootButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (!_isUefi)
-            {
-                MessageBox.Show(
-                    _isArabic ? "هذه الميزة تتطلب نظام UEFI." : "This feature requires a UEFI system.",
-                    _isArabic ? "غير مدعوم" : "Not Supported",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            var msg = _isArabic
-                ? "سيتم إعادة تشغيل جهازك فوراً والدخول إلى إعدادات BIOS/UEFI.\n\nاحفظ جميع أعمالك قبل المتابعة.\n\nهل أنت متأكد؟"
-                : "Your computer will restart immediately and enter the BIOS/UEFI settings.\n\nSave all your work before proceeding.\n\nAre you sure?";
-
-            var title = _isArabic ? "تأكيد إعادة التشغيل" : "Confirm Restart";
-
-            var result = MessageBox.Show(msg, title, MessageBoxButton.YesNo, MessageBoxImage.Question,
-                _isArabic ? MessageBoxResult.No : MessageBoxResult.No,
-                _isArabic ? MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : MessageBoxOptions.None);
-
-            if (result == MessageBoxResult.Yes)
-            {
-                try
-                {
-                    Process.Start(new ProcessStartInfo
-                    {
-                        FileName = "shutdown",
-                        Arguments = "/r /fw /t 0",
-                        UseShellExecute = false,
-                        CreateNoWindow = true
-                    });
-                }
-                catch (Exception ex)
-                {
-                    var errMsg = _isArabic
-                        ? $"فشل تنفيذ أمر إعادة التشغيل:\n{ex.Message}"
-                        : $"Failed to execute restart command:\n{ex.Message}";
-                    var errTitle = _isArabic ? "خطأ" : "Error";
-                    MessageBox.Show(errMsg, errTitle, MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }
-        }
-
-        private bool IsAdministrator()
-        {
-            var identity = WindowsIdentity.GetCurrent();
-            var principal = new WindowsPrincipal(identity);
-            return principal.IsInRole(WindowsBuiltInRole.Administrator);
-        }
-
-        private void RestartAsAdmin()
-        {
-            var fileName = Process.GetCurrentProcess().MainModule?.FileName;
-            if (string.IsNullOrEmpty(fileName))
-            {
-                MessageBox.Show(
-                    _isArabic ? "تعذر تحديد مسار التطبيق لإعادة التشغيل كمسؤول." : "Could not determine application path to restart as admin.",
-                    _isArabic ? "خطأ" : "Error",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            var startInfo = new ProcessStartInfo(fileName)
-            {
-                UseShellExecute = true,
-                Verb = "runas"
-            };
-
-            try
-            {
-                Process.Start(startInfo);
-                Application.Current.Shutdown();
-            }
-            catch (Exception)
-            {
-                MessageBox.Show(
-                    _isArabic ? "تتطلب هذه العملية صلاحيات المسؤول." : "Administrator privileges are required to run this application.",
-                    _isArabic ? "تم رفض الوصول" : "Access Denied",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
-                Application.Current.Shutdown();
-            }
-        }
-
-        private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
             try
             {
@@ -237,39 +438,6 @@ namespace BootEase
                 e.Handled = true;
             }
             catch { }
-        }
-
-        // P/Invoke for GetFirmwareType
-        [DllImport("kernel32.dll", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool GetFirmwareType(out FirmwareType firmwareType);
-
-        private enum FirmwareType
-        {
-            Unknown = 0,
-            Bios = 1,
-            Uefi = 2,
-            Max = 3
-        }
-
-        private bool IsUefiSystem()
-        {
-            // First try GetFirmwareType API
-            try
-            {
-                if (GetFirmwareType(out FirmwareType type))
-                {
-                    return type == FirmwareType.Uefi;
-                }
-            }
-            catch
-            {
-                // Fallback or ignore
-            }
-
-            // Fallback: Check environment variable that only exists on UEFI
-            // However, GetFirmwareType is reliable on Win8+ (which covers Win10/11)
-            return false;
         }
     }
 }

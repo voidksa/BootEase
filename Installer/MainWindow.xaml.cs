@@ -175,32 +175,58 @@ Version 3, 29 June 2007
         private async void ActionButton_Click(object sender, RoutedEventArgs e)
         {
             ActionButton.IsEnabled = false;
+            ExitButton.IsEnabled = false;
             InstallProgress.Visibility = Visibility.Visible;
+            InstallProgress.Value = 0;
 
             try
             {
                 if (_isUninstallMode)
                 {
                     StatusText.Text = _isArabic ? "جاري الإزالة..." : "Uninstalling...";
+
+                    // Simulate realistic progress for uninstall
+                    for (int i = 0; i <= 100; i += 5)
+                    {
+                        InstallProgress.Value = i;
+                        await Task.Delay(30); // Quick animation
+                    }
+
                     await Task.Run(() => PerformUninstall());
+
                     StatusText.Text = _isArabic ? "تمت الإزالة بنجاح!" : "Uninstallation Complete!";
                     MessageBox.Show(
                         _isArabic ? "تمت إزالة BootEase بنجاح." : "BootEase has been successfully removed.",
                         _isArabic ? "تمت الإزالة" : "Uninstalled",
                         MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    // Close immediately as requested
+                    Application.Current.Shutdown();
                 }
                 else
                 {
                     StatusText.Text = _isArabic ? "جاري التثبيت..." : "Installing...";
+
+                    // Simulate realistic progress for install (files are small, so we fake it)
+                    for (int i = 0; i <= 90; i += 2)
+                    {
+                        InstallProgress.Value = i;
+                        await Task.Delay(20); // 1 second total approx
+                    }
+
                     await Task.Run(() => PerformInstall());
+
+                    InstallProgress.Value = 100;
+                    await Task.Delay(200);
+
                     StatusText.Text = _isArabic ? "تم التثبيت بنجاح!" : "Installation Complete!";
                     MessageBox.Show(
                         _isArabic ? "تم تثبيت BootEase بنجاح!" : "BootEase has been successfully installed!",
                         _isArabic ? "نجاح" : "Success",
                         MessageBoxButton.OK, MessageBoxImage.Information);
-                }
 
-                Application.Current.Shutdown();
+                    Application.Current.Shutdown();
+                }
             }
             catch (Exception ex)
             {
@@ -210,6 +236,7 @@ Version 3, 29 June 2007
                     _isArabic ? "خطأ" : "Error",
                     MessageBoxButton.OK, MessageBoxImage.Error);
                 ActionButton.IsEnabled = true;
+                ExitButton.IsEnabled = true;
                 InstallProgress.Visibility = Visibility.Hidden;
             }
         }
@@ -257,6 +284,17 @@ Version 3, 29 June 2007
 
         private void PerformUninstall()
         {
+            // 0. Kill running process if exists
+            try
+            {
+                foreach (var proc in Process.GetProcessesByName("BootEase"))
+                {
+                    proc.Kill();
+                    proc.WaitForExit(2000); // Wait up to 2s
+                }
+            }
+            catch { }
+
             // 1. Delete Shortcut
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
             string shortcutPath = Path.Combine(desktopPath, "BootEase.lnk");

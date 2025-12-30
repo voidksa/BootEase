@@ -26,11 +26,14 @@
 </div>
 
 - **One-Click BIOS Entry**: Instantly restart and boot directly into UEFI settings.
+- **Advanced Power Menu**: Options to restart to **Recovery Mode (Safe Mode)**, **BIOS**, or just restart **Windows Explorer**.
+- **System Information**: Displays detailed info including **BIOS Version**, **BIOS Mode** (UEFI/Legacy), **Secure Boot** status, and **Motherboard Model**.
+- **Dark/Light Mode**: Toggle between themes with a single click.
 - **UEFI Detection**: Automatically detects if your system supports UEFI.
+- **Command Line Support**: Supports arguments `/bios`, `/safe`, and `/recovery` for automation/shortcuts.
 - **Admin Elevation**: Auto-requests necessary privileges to perform firmware commands.
-- **Modern UI**: Clean, minimalist interface built with WPF (supports English & Arabic).
-- **Safety First**: Confirmation dialog prevents accidental restarts.
-- **Portable & Installer**: Available as a standalone executable or a full installer.
+- **Modern UI**: Clean, card-based interface built with WPF (supports English & Arabic).
+- **Portable & Installer**: Available as a standalone executable or a full installer with uninstallation support.
 
 ## 🛠️ Installation
 
