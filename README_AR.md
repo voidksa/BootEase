@@ -21,8 +21,7 @@
 ## ✨ المميزات
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/voidksa/BootEase/main/screenshots/app_ar.png" alt="واجهة البرنامج" width="45%" />
-  <img src="https://raw.githubusercontent.com/voidksa/BootEase/main/screenshots/setup_ar.png" alt="واجهة المثبت" width="45%" />
+  <img src="https://raw.githubusercontent.com/voidksa/BootEase/main/screenshots/app_ar.png" alt="واجهة البرنامج" width="70%" />
 </div>
 
 - **دخول بنقرة واحدة**: إعادة التشغيل والدخول مباشرة إلى إعدادات UEFI.
