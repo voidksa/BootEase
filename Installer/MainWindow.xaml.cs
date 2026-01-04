@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using Microsoft.Win32;
+using System.Windows.Media;
+using System.Windows.Interop;
 
 namespace BootEaseSetup
 {
@@ -15,6 +18,12 @@ namespace BootEaseSetup
         private string _installDir;
         private string _exePath;
         private bool _isArabic = false;
+        private bool _isDarkMode = false;
+
+        [System.Runtime.InteropServices.DllImport("dwmapi.dll")]
+        private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
+
+        private const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
 
         private const string LicenseEnglish = @"IMPORTANT: READ CAREFULLY
 
@@ -85,6 +94,89 @@ Version 3, 29 June 2007
             // Bind checkbox only if in install mode
             AgreeCheckBox.Checked += (s, e) => UpdateActionButtonState();
             AgreeCheckBox.Unchecked += (s, e) => UpdateActionButtonState();
+
+            // Setup Theme
+            SystemEvents.UserPreferenceChanged += (s, e) =>
+            {
+                if (e.Category == UserPreferenceCategory.General)
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        DetectSystemTheme();
+                        ApplyTheme();
+                    });
+                }
+            };
+            DetectSystemTheme();
+        }
+
+        private void DetectSystemTheme()
+        {
+            bool systemUsesDark = false;
+            try
+            {
+                using (var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"))
+                {
+                    if (key != null)
+                    {
+                        var val = key.GetValue("AppsUseLightTheme");
+                        if (val != null)
+                        {
+                            systemUsesDark = (int)val == 0;
+                        }
+                    }
+                }
+            }
+            catch { }
+            _isDarkMode = systemUsesDark;
+            ApplyTheme();
+        }
+
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+            ApplyTheme();
+        }
+
+        private void ApplyTheme()
+        {
+            // Apply Title Bar Theme (DWM)
+            try
+            {
+                if (PresentationSource.FromVisual(this) is HwndSource source)
+                {
+                    int useDarkMode = _isDarkMode ? 1 : 0;
+                    DwmSetWindowAttribute(source.Handle, DWMWA_USE_IMMERSIVE_DARK_MODE, ref useDarkMode, sizeof(int));
+                }
+            }
+            catch { }
+
+            if (_isDarkMode)
+            {
+                // Dark Theme
+                Resources["WindowBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#181818"));
+                Resources["HeaderBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#252526"));
+                Resources["FooterBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#252526"));
+                Resources["TextPrimaryBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFF"));
+                Resources["TextSecondaryBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CCCCCC"));
+                Resources["BorderBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3E3E42"));
+                Resources["AccentBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#0078D7"));
+                Resources["SecondaryButtonBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3E3E42"));
+                Resources["SecondaryButtonForegroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFF"));
+            }
+            else
+            {
+                // Light Theme
+                Resources["WindowBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFF"));
+                Resources["HeaderBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F3F3F3"));
+                Resources["FooterBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FAFAFA"));
+                Resources["TextPrimaryBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#333333"));
+                Resources["TextSecondaryBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#666666"));
+                Resources["BorderBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#DDDDDD"));
+                Resources["AccentBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#0078D7"));
+                Resources["SecondaryButtonBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E0E0E0"));
+                Resources["SecondaryButtonForegroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#333333"));
+            }
         }
 
         private void ApplyLocalization()

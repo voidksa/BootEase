@@ -72,9 +72,6 @@ cd BootEase
 
 # Build the project
 dotnet build BootEase.csproj -c Release
-
-# To build the self-contained installer (optional)
-# See the build scripts or instructions in README_AR.md for detailed steps.
 ```
 
 ## 🤝 Contributing

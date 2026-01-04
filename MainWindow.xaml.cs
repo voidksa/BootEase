@@ -19,7 +19,7 @@ namespace BootEase
     {
         private bool _isArabic = false;
         private bool _isDarkMode = false;
-        private const string CurrentVersion = "v1.1.0";
+        private const string CurrentVersion = "v1.1.1";
         private readonly string _configPath;
 
         public MainWindow()
@@ -38,10 +38,23 @@ namespace BootEase
             ApplyLocalization();
 
             // Setup Theme
+            DetectSystemTheme();
+            SystemEvents.UserPreferenceChanged += (s, e) =>
+            {
+                if (e.Category == UserPreferenceCategory.General)
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        DetectSystemTheme();
+                        ApplyTheme();
+                    });
+                }
+            };
+
             LoadSettings();
         }
 
-        private void LoadSettings()
+        private void DetectSystemTheme()
         {
             bool systemUsesDark = false;
             try
@@ -59,18 +72,17 @@ namespace BootEase
                 }
             }
             catch { }
-
             _isDarkMode = systemUsesDark;
+        }
 
-            // Override from config if exists
+        private void LoadSettings()
+        {
+            // Load Language from config
             if (File.Exists(_configPath))
             {
                 try
                 {
                     string content = File.ReadAllText(_configPath);
-                    if (content.Contains("Theme=Dark")) _isDarkMode = true;
-                    else if (content.Contains("Theme=Light")) _isDarkMode = false;
-
                     if (content.Contains("Language=Ar")) _isArabic = true;
                     else if (content.Contains("Language=En")) _isArabic = false;
                 }
@@ -85,9 +97,8 @@ namespace BootEase
         {
             try
             {
-                string theme = _isDarkMode ? "Dark" : "Light";
                 string lang = _isArabic ? "Ar" : "En";
-                File.WriteAllText(_configPath, $"Theme={theme}\nLanguage={lang}");
+                File.WriteAllText(_configPath, $"Language={lang}");
             }
             catch { }
         }
@@ -271,22 +282,12 @@ namespace BootEase
             }
         }
 
-        private void ThemeButton_Click(object sender, RoutedEventArgs e)
-        {
-            _isDarkMode = !_isDarkMode;
-            ApplyTheme();
-            SaveSettings();
-        }
-
         [System.Runtime.InteropServices.DllImport("dwmapi.dll")]
         private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
         private const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
 
         private void ApplyTheme()
         {
-            var moonIcon = (Geometry)FindResource("MoonIconFluent");
-            var sunIcon = (Geometry)FindResource("SunIconFluent");
-
             // Apply Title Bar Theme (DWM)
             try
             {
@@ -300,25 +301,23 @@ namespace BootEase
 
             if (_isDarkMode)
             {
-                // Dark Theme
-                Resources["WindowBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#202020"));
-                Resources["CardBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2D2D2D"));
+                // Dark Theme - Improved colors (less gloomy)
+                Resources["WindowBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#181818")); // Deep dark
+                Resources["CardBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#252526"));   // VS Code style
                 Resources["TextPrimaryBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFF"));
-                Resources["TextSecondaryBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#AAAAAA"));
-                Resources["BorderBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#404040"));
-
-                ThemeButton.Content = sunIcon;
+                Resources["TextSecondaryBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CCCCCC"));
+                Resources["BorderBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3E3E42"));
+                Resources["AccentBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#0078D7"));
             }
             else
             {
                 // Light Theme
-                Resources["WindowBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F5F5F5"));
+                Resources["WindowBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F3F3F3"));
                 Resources["CardBackgroundBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFF"));
                 Resources["TextPrimaryBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#333333"));
                 Resources["TextSecondaryBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#666666"));
-                Resources["BorderBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#DDDDDD"));
-
-                ThemeButton.Content = moonIcon;
+                Resources["BorderBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E0E0E0"));
+                Resources["AccentBrush"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#0078D7"));
             }
         }
 
@@ -352,6 +351,9 @@ namespace BootEase
                 ((ComboBoxItem)ActionCombo.Items[3]).Content = "إعادة تشغيل عادية";
 
                 UpdateRun.Text = "تحديث متوفر!";
+
+                BtnCopyInfo.ToolTip = "نسخ معلومات النظام";
+                BtnSaveInfo.ToolTip = "حفظ معلومات النظام كملف نصي";
             }
             else
             {
@@ -374,6 +376,9 @@ namespace BootEase
                 ((ComboBoxItem)ActionCombo.Items[3]).Content = "Normal Restart";
 
                 UpdateRun.Text = "Update Available!";
+
+                BtnCopyInfo.ToolTip = "Copy System Info";
+                BtnSaveInfo.ToolTip = "Save System Info to Text File";
             }
 
             // Trigger description update
@@ -383,6 +388,64 @@ namespace BootEase
         private void CheckUpdateBtn_Click(object sender, RoutedEventArgs e)
         {
             CheckForUpdates(true);
+        }
+
+        private string GetSystemInfoString()
+        {
+            var sb = new System.Text.StringBuilder();
+            if (_isArabic)
+            {
+                sb.AppendLine("--- معلومات النظام ---");
+                sb.AppendLine($"الموديل: {ValModel.Text}");
+                sb.AppendLine($"إصدار البيوس: {ValBiosVer.Text}");
+                sb.AppendLine($"نمط البيوس: {ValBiosMode.Text}");
+                sb.AppendLine($"الإقلاع الآمن: {ValSecureBoot.Text}");
+                sb.AppendLine("----------------------");
+                sb.AppendLine($"الإصدار: {CurrentVersion}");
+            }
+            else
+            {
+                sb.AppendLine("--- System Information ---");
+                sb.AppendLine($"Model: {ValModel.Text}");
+                sb.AppendLine($"BIOS Version: {ValBiosVer.Text}");
+                sb.AppendLine($"BIOS Mode: {ValBiosMode.Text}");
+                sb.AppendLine($"Secure Boot: {ValSecureBoot.Text}");
+                sb.AppendLine("--------------------------");
+                sb.AppendLine($"Version: {CurrentVersion}");
+            }
+            return sb.ToString();
+        }
+
+        private void BtnCopyInfo_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Clipboard.SetText(GetSystemInfoString());
+                MessageBox.Show(_isArabic ? "تم نسخ المعلومات إلى الحافظة." : "System info copied to clipboard.", "BootEase", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void BtnSaveInfo_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "Text File (*.txt)|*.txt";
+                saveFileDialog.FileName = "SystemInfo.txt";
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    File.WriteAllText(saveFileDialog.FileName, GetSystemInfoString());
+                    MessageBox.Show(_isArabic ? "تم حفظ الملف بنجاح." : "File saved successfully.", "BootEase", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private async void CheckForUpdates(bool manual = false)
