@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BootEase"
         mc:Ignorable="d"
-        Title="BootEase" SizeToContent="Height" Width="450"
+        Title="BootEase" SizeToContent="Height" Width="900"
         ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
         Background="{DynamicResource WindowBackgroundBrush}"
         Loaded="MainWindow_Loaded">
@@ -121,14 +121,18 @@
     <Grid Margin="25" VerticalAlignment="Top">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/> <!-- Header -->
-            <RowDefinition Height="Auto"/> <!-- System Info -->
-            <RowDefinition Height="Auto"/> <!-- Actions -->
-            <RowDefinition Height="20"/>   <!-- Spacer -->
+            <RowDefinition Height="Auto"/> <!-- Content -->
             <RowDefinition Height="Auto"/> <!-- Footer -->
         </Grid.RowDefinitions>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
         <!-- Header -->
-        <Grid Grid.Row="0" Margin="0,0,0,25">
+        <Grid Grid.Row="0" Grid.ColumnSpan="3" Margin="0,0,0,25">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
@@ -149,31 +153,47 @@
         </Grid>
 
         <!-- System Info Card -->
-        <Border Grid.Row="1" Style="{StaticResource CardStyle}">
+        <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource CardStyle}">
             <StackPanel>
                 <TextBlock x:Name="SysInfoTitle" Text="System Information" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource AccentBrush}" Margin="0,0,0,12"/>
                 
                 <Grid Margin="0,0,0,10">
-                    <TextBlock x:Name="LblModel" Text="Model:" Style="{StaticResource InfoLabelStyle}"/>
-                    <TextBlock x:Name="ValModel" Text="Loading..." Style="{StaticResource InfoValueStyle}"/>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="LblModel" Grid.Column="0" Text="Model:" Style="{StaticResource InfoLabelStyle}"/>
+                    <TextBlock x:Name="ValModel" Grid.Column="1" Text="Loading..." Style="{StaticResource InfoValueStyle}" TextTrimming="CharacterEllipsis"/>
                 </Grid>
                 <Separator Background="{DynamicResource BorderBrush}" Margin="0,0,0,10"/>
                 
                 <Grid Margin="0,0,0,10">
-                    <TextBlock x:Name="LblBiosVer" Text="BIOS Version:" Style="{StaticResource InfoLabelStyle}"/>
-                    <TextBlock x:Name="ValBiosVer" Text="Loading..." Style="{StaticResource InfoValueStyle}"/>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="LblBiosVer" Grid.Column="0" Text="BIOS Version:" Style="{StaticResource InfoLabelStyle}"/>
+                    <TextBlock x:Name="ValBiosVer" Grid.Column="1" Text="Loading..." Style="{StaticResource InfoValueStyle}" TextTrimming="CharacterEllipsis"/>
                 </Grid>
                 <Separator Background="{DynamicResource BorderBrush}" Margin="0,0,0,10"/>
                 
                 <Grid Margin="0,0,0,10">
-                    <TextBlock x:Name="LblBiosMode" Text="BIOS Mode:" Style="{StaticResource InfoLabelStyle}"/>
-                    <TextBlock x:Name="ValBiosMode" Text="Loading..." Style="{StaticResource InfoValueStyle}"/>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="LblBiosMode" Grid.Column="0" Text="BIOS Mode:" Style="{StaticResource InfoLabelStyle}"/>
+                    <TextBlock x:Name="ValBiosMode" Grid.Column="1" Text="Loading..." Style="{StaticResource InfoValueStyle}" TextTrimming="CharacterEllipsis"/>
                 </Grid>
                 <Separator Background="{DynamicResource BorderBrush}" Margin="0,0,0,10"/>
                 
                 <Grid>
-                    <TextBlock x:Name="LblSecureBoot" Text="Secure Boot:" Style="{StaticResource InfoLabelStyle}"/>
-                    <TextBlock x:Name="ValSecureBoot" Text="Loading..." Style="{StaticResource InfoValueStyle}"/>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="LblSecureBoot" Grid.Column="0" Text="Secure Boot:" Style="{StaticResource InfoLabelStyle}"/>
+                    <TextBlock x:Name="ValSecureBoot" Grid.Column="1" Text="Loading..." Style="{StaticResource InfoValueStyle}" TextTrimming="CharacterEllipsis"/>
                 </Grid>
                 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
@@ -186,7 +206,7 @@
         </Border>
 
         <!-- Actions Card -->
-        <Border Grid.Row="2" Style="{StaticResource CardStyle}">
+        <Border Grid.Row="1" Grid.Column="2" Style="{StaticResource CardStyle}">
             <StackPanel>
                 <TextBlock x:Name="ActionsTitle" Text="Power Options" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource AccentBrush}" Margin="0,0,0,12"/>
                 
@@ -208,7 +228,7 @@
         </Border>
 
         <!-- Footer -->
-        <Grid Grid.Row="4">
+        <Grid Grid.Row="2" Grid.ColumnSpan="3">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <TextBlock FontSize="12">
                      <Hyperlink NavigateUri="https://github.com/voidksa/BootEase" RequestNavigate="Hyperlink_RequestNavigate" Foreground="{DynamicResource AccentBrush}">
