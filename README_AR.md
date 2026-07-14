@@ -3,9 +3,13 @@
   <h1>BootEase</h1>
   <p><strong>وصول مباشر إلى خيارات البيوس والاسترداد في Windows.</strong></p>
   <p>
-    <a href="https://github.com/voidksa/BootEase/releases/latest"><img src="https://img.shields.io/github/v/release/voidksa/BootEase?style=flat-square&label=Release" alt="أحدث إصدار" /></a>
+    <a href="https://github.com/voidksa/BootEase/releases/latest"><img src="https://img.shields.io/github/v/tag/voidksa/BootEase?sort=semver&style=flat-square&label=Release" alt="أحدث إصدار" /></a>
     <img src="https://img.shields.io/badge/Windows-10%20%7C%2011-2563eb?style=flat-square" alt="Windows 10 وWindows 11" />
     <a href="LICENSE"><img src="https://img.shields.io/github/license/voidksa/BootEase?style=flat-square" alt="ترخيص GPL-3.0" /></a>
+  </p>
+  <p>
+    <a href="https://github.com/voidksa/BootEase/releases/download/v2.0.0/BootEaseSetup-2.0.0-x64.exe"><img src="https://img.shields.io/badge/Download-Installer-2563eb?style=for-the-badge&logo=windows&logoColor=white" alt="تحميل مثبت BootEase" /></a>
+    <a href="https://github.com/voidksa/BootEase/releases/download/v2.0.0/BootEasePortable-2.0.0-x64.exe"><img src="https://img.shields.io/badge/Download-Portable-0f766e?style=for-the-badge" alt="تحميل النسخة المحمولة من BootEase" /></a>
   </p>
   <p><a href="README.md">English</a> · <a href="README_AR.md">العربية</a></p>
   <p>
@@ -41,12 +45,12 @@ BootEase أداة مكتبية متخصصة لنظام Windows تتيح الدخ
 
 ## التحميل
 
-حمّل أحدث نسخة من صفحة [إصدارات GitHub](https://github.com/voidksa/BootEase/releases/latest).
+اختر النسخة المناسبة أدناه، أو افتح صفحة [أحدث إصدار](https://github.com/voidksa/BootEase/releases/latest) لقراءة ملاحظات الإصدار وبصمات الملفات.
 
 | الملف | الاستخدام المناسب |
 | --- | --- |
-| `BootEaseSetup-2.0.0-x64.exe` | يثبت BootEase وينشئ الاختصارات ويوفر إزالة تثبيت اعتيادية. هو الخيار الموصى به للاستخدام الدائم. |
-| `BootEasePortable-2.0.0-x64.exe` | يعمل مباشرة من دون تثبيت. مناسب للتجربة أو التشغيل من وحدة تخزين خارجية. |
+| [تحميل `BootEaseSetup-2.0.0-x64.exe`](https://github.com/voidksa/BootEase/releases/download/v2.0.0/BootEaseSetup-2.0.0-x64.exe) | يثبت BootEase وينشئ الاختصارات ويوفر إزالة تثبيت اعتيادية. هو الخيار الموصى به للاستخدام الدائم. |
+| [تحميل `BootEasePortable-2.0.0-x64.exe`](https://github.com/voidksa/BootEase/releases/download/v2.0.0/BootEasePortable-2.0.0-x64.exe) | يعمل مباشرة من دون تثبيت. مناسب للتجربة أو التشغيل من وحدة تخزين خارجية. |
 
 يدعم BootEase نظامي Windows 10 وWindows 11 بمعمارية x64.
 

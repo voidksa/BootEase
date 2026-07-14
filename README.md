@@ -3,9 +3,13 @@
   <h1>BootEase</h1>
   <p><strong>Direct access to Windows firmware and recovery options.</strong></p>
   <p>
-    <a href="https://github.com/voidksa/BootEase/releases/latest"><img src="https://img.shields.io/github/v/release/voidksa/BootEase?style=flat-square&label=Release" alt="Latest release" /></a>
+    <a href="https://github.com/voidksa/BootEase/releases/latest"><img src="https://img.shields.io/github/v/tag/voidksa/BootEase?sort=semver&style=flat-square&label=Release" alt="Latest release" /></a>
     <img src="https://img.shields.io/badge/Windows-10%20%7C%2011-2563eb?style=flat-square" alt="Windows 10 and 11" />
     <a href="LICENSE"><img src="https://img.shields.io/github/license/voidksa/BootEase?style=flat-square" alt="GPL-3.0 license" /></a>
+  </p>
+  <p>
+    <a href="https://github.com/voidksa/BootEase/releases/download/v2.0.0/BootEaseSetup-2.0.0-x64.exe"><img src="https://img.shields.io/badge/Download-Installer-2563eb?style=for-the-badge&logo=windows&logoColor=white" alt="Download BootEase installer" /></a>
+    <a href="https://github.com/voidksa/BootEase/releases/download/v2.0.0/BootEasePortable-2.0.0-x64.exe"><img src="https://img.shields.io/badge/Download-Portable-0f766e?style=for-the-badge" alt="Download BootEase portable" /></a>
   </p>
   <p><a href="README.md">English</a> · <a href="README_AR.md">العربية</a></p>
   <p>
@@ -39,12 +43,12 @@ Version 2 is rebuilt with Electron and TypeScript. It introduces a bilingual int
 
 ## Download
 
-Download the latest build from the [GitHub Releases](https://github.com/voidksa/BootEase/releases/latest) page.
+Choose a package below, or open the [latest release](https://github.com/voidksa/BootEase/releases/latest) for release notes and checksums.
 
 | Package | Recommended use |
 | --- | --- |
-| `BootEaseSetup-2.0.0-x64.exe` | Installs BootEase, creates shortcuts, and provides standard uninstallation. Recommended for regular use. |
-| `BootEasePortable-2.0.0-x64.exe` | Runs directly without installation. Useful for testing or carrying on removable storage. |
+| [Download `BootEaseSetup-2.0.0-x64.exe`](https://github.com/voidksa/BootEase/releases/download/v2.0.0/BootEaseSetup-2.0.0-x64.exe) | Installs BootEase, creates shortcuts, and provides standard uninstallation. Recommended for regular use. |
+| [Download `BootEasePortable-2.0.0-x64.exe`](https://github.com/voidksa/BootEase/releases/download/v2.0.0/BootEasePortable-2.0.0-x64.exe) | Runs directly without installation. Useful for testing or carrying on removable storage. |
 
 BootEase supports Windows 10 and Windows 11 on x64 systems.
 
