@@ -1,83 +1,100 @@
-# BootEase 🚀
-
 <div align="center">
-  <img src="https://raw.githubusercontent.com/voidksa/BootEase/main/app.ico" alt="BootEase Logo" width="128" height="128" />
-  <br>
-  <p><b>One-Click BIOS/UEFI Entry Utility for Windows</b></p>
-  
+  <img src="electron-app/src/renderer/public/app_icon.png" alt="BootEase" width="104" height="104" />
+  <h1>BootEase</h1>
+  <p><strong>Direct access to Windows firmware and recovery options.</strong></p>
   <p>
-    <a href="https://github.com/voidksa/BootEase/releases/latest">
-      <img src="https://img.shields.io/github/v/release/voidksa/BootEase?style=for-the-badge&label=Download%20Latest&color=success" alt="Download Latest Release" />
-    </a>
+    <a href="https://github.com/voidksa/BootEase/releases/latest"><img src="https://img.shields.io/github/v/release/voidksa/BootEase?style=flat-square&label=Release" alt="Latest release" /></a>
+    <img src="https://img.shields.io/badge/Windows-10%20%7C%2011-2563eb?style=flat-square" alt="Windows 10 and 11" />
+    <a href="LICENSE"><img src="https://img.shields.io/github/license/voidksa/BootEase?style=flat-square" alt="GPL-3.0 license" /></a>
   </p>
-
+  <p><a href="README.md">English</a> · <a href="README_AR.md">العربية</a></p>
   <p>
-    <a href="README.md">English</a> | <a href="README_AR.md">العربية</a>
+    <a href="https://extractly.vip/"><img src="electron-app/src/renderer/public/extractly-mark.png" alt="Extractly.vip" width="56" /></a><br />
+    <sub>An <a href="https://extractly.vip/">Extractly.vip</a> product, developed by voidksa</sub>
   </p>
 </div>
 
-**BootEase** is a lightweight, modern Windows utility designed to restart your computer and automatically enter the **BIOS/UEFI** firmware settings with a single click. No need to spam F2, DEL, or ESC keys anymore!
+## Overview
 
-## ✨ Features
+BootEase is a focused Windows desktop utility for opening BIOS/UEFI firmware settings, Windows Recovery, or performing common restart actions without relying on startup key timing.
+
+Version 2 is rebuilt with Electron and TypeScript. It introduces a bilingual interface, proper right-to-left support, complete system information, selective UAC elevation, and installer and portable distributions for Windows x64.
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/voidksa/BootEase/main/screenshots/app_en.png" alt="BootEase Application" width="70%" />
+  <img src="screenshots/app_en.png" alt="BootEase 2.0 English interface" width="92%" />
 </div>
 
-- **One-Click BIOS Entry**: Instantly restart and boot directly into UEFI settings.
-- **Advanced Power Menu**: Options to restart to **Recovery Mode (Safe Mode)**, **BIOS**, or just restart **Windows Explorer**.
-- **System Information**: Displays detailed info including **BIOS Version**, **BIOS Mode** (UEFI/Legacy), **Secure Boot** status, and **Motherboard Model**.
-- **Dark/Light Mode**: Toggle between themes with a single click.
-- **UEFI Detection**: Automatically detects if your system supports UEFI.
-- **Command Line Support**: Supports arguments `/bios`, `/safe`, and `/recovery` for automation/shortcuts.
-- **Admin Elevation**: Auto-requests necessary privileges to perform firmware commands.
-- **Modern UI**: Clean, card-based interface built with WPF (supports English & Arabic).
-- **Portable & Installer**: Available as a standalone executable or a full installer with uninstallation support.
+## Capabilities
 
-## 🛠️ Installation
+| Area | What BootEase provides |
+| --- | --- |
+| Firmware access | Restart directly into BIOS/UEFI settings on supported systems. |
+| Recovery | Open Windows Advanced Startup and recovery options. |
+| Restart actions | Restart Windows normally or restart Windows Explorer only. |
+| System information | View the device, motherboard, BIOS version and mode, Secure Boot status, operating system, and architecture. |
+| Language and appearance | English and Arabic interfaces with full RTL support, plus light, dark, and system themes. |
+| Export | Copy system details to the clipboard or save them as a text file. |
+| Update checks | Compare the installed version with the latest public GitHub release. |
+| Command line | Launch supported restart actions from scripts or shortcuts. |
 
-You can download the latest installer from the [Releases](https://github.com/voidksa/BootEase/releases) page.
+## Download
 
-1. Download `BootEaseSetup.exe`.
-2. Run the installer.
-3. You can switch the installer language (English/Arabic) using the button in the top corner.
-4. Launch **BootEase** from your desktop or start menu.
+Download the latest build from the [GitHub Releases](https://github.com/voidksa/BootEase/releases/latest) page.
 
-## ⚖️ License & Attribution (Important)
+| Package | Recommended use |
+| --- | --- |
+| `BootEaseSetup-2.0.0-x64.exe` | Installs BootEase, creates shortcuts, and provides standard uninstallation. Recommended for regular use. |
+| `BootEasePortable-2.0.0-x64.exe` | Runs directly without installation. Useful for testing or carrying on removable storage. |
 
-**This project is protected under the GNU General Public License v3.0 (GPLv3) with additional attribution terms.**
+BootEase supports Windows 10 and Windows 11 on x64 systems.
 
-### Terms of Use & Modification:
-1.  ✅ **Right to Modify:** You are free to fork, modify, and improve the source code.
-2.  ✅ **Contributor Credit:** You may add your name as a "Contributor" or "Modifier" to your own forked version.
-3.  ⛔ **Mandatory Attribution:** You **MUST NOT** remove the original repository link (GitHub) or the original author's name from the software UI or documentation.
-4.  ⛔ **No Impersonation:** You cannot present a fork as the "Official Version" or claim original ownership. Forks must be clearly labeled as **"Unofficial / Modified"**.
-5.  ⛔ **Stay Open:** Any modifications must remain Open Source under GPLv3. You cannot close the source or sell it as a proprietary product.
+## Safety model
 
-**In short:** Fork and improve as you wish, but do not steal credit, and keep the original source link visible.
+BootEase runs with normal user permissions. It requests UAC elevation only after you select and confirm an operation that requires administrative access.
 
-## 🏗️ Build from Source
+The Electron renderer is sandboxed and isolated from privileged Windows operations. Navigation, popups, webviews, and permission requests are blocked, while IPC commands and external links are restricted to explicit allowlists.
 
-Requirements:
-- .NET 8.0 SDK
-- Visual Studio 2022
+Restart and firmware actions can close active applications. Save your work before confirming an action.
 
-```powershell
-# Clone the repository
-git clone https://github.com/voidksa/BootEase.git
+## Command-line options
 
-# Navigate to the project
-cd BootEase
-
-# Build the project
-dotnet build BootEase.csproj -c Release
+```text
+BootEase.exe /bios
+BootEase.exe /recovery
+BootEase.exe /safe
+BootEase.exe /restart
 ```
 
-## 🤝 Contributing
+The `-option` and `--option` forms are also accepted. `/safe` opens the same Windows recovery flow as `/recovery`.
 
-Contributions are welcome!
-1. **Fork** the repository.
-2. Create a new branch.
-3. Commit your changes.
-4. Push to the branch.
-5. Open a **Pull Request**.
+## Build from source
+
+Requirements:
+
+- Windows 10 or Windows 11 x64
+- Node.js 22 or newer
+- npm 11 or newer
+
+```powershell
+git clone https://github.com/voidksa/BootEase.git
+cd BootEase\electron-app
+
+npm install
+npm test
+npm run build
+
+# Build the installer and portable executable
+npm run dist:win
+```
+
+Generated packages are written to `electron-app/release/`. BootEase 2.x source is maintained in [`electron-app`](electron-app/). Previous versions remain available through the repository tags and release history.
+
+## License and ownership
+
+BootEase is free software licensed under the [GNU General Public License v3.0](LICENSE). Distributed copies and modifications must follow the GPLv3 requirements and preserve applicable copyright and license notices.
+
+BootEase is owned and maintained by [Extractly.vip](https://extractly.vip/) and was originally developed by **voidksa**. See [NOTICE.md](NOTICE.md) for attribution details. Product support is available at [support@extractly.vip](mailto:support@extractly.vip).
+
+## Contributing
+
+Issues and pull requests are welcome. Keep changes focused, document user-visible behavior, and run the test suite before submitting a pull request.

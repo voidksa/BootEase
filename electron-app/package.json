@@ -1,0 +1,95 @@
+{
+  "name": "bootease",
+  "version": "2.0.0",
+  "description": "An Extractly.vip Windows BIOS/UEFI and recovery utility",
+  "main": "dist/main/main/index.js",
+  "author": {
+    "name": "Extractly.vip / voidksa",
+    "email": "support@extractly.vip",
+    "url": "https://extractly.vip/"
+  },
+  "license": "GPL-3.0-only",
+  "homepage": "https://extractly.vip/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/voidksa/BootEase.git"
+  },
+  "scripts": {
+    "clean": "node scripts/clean.cjs",
+    "build:main": "tsc -p tsconfig.main.json",
+    "build:renderer": "tsc -p tsconfig.renderer.json --noEmit && vite build",
+    "build": "npm run clean && npm run build:main && npm run build:renderer",
+    "start": "npm run build && electron .",
+    "dev": "npm run start",
+    "test": "vitest run --config vitest.config.ts",
+    "pack:win": "npm run build && electron-builder --win dir --x64",
+    "dist:win": "npm run build && electron-builder --win nsis portable --x64"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1",
+    "electron": "^43.1.0",
+    "electron-builder": "^26.15.3",
+    "typescript": "^7.0.2",
+    "vite": "^8.1.4",
+    "vitest": "^4.1.10"
+  },
+  "build": {
+    "appId": "com.voidksa.bootease",
+    "productName": "BootEase",
+    "copyright": "Copyright © 2025-2026 Extractly.vip. Developed by voidksa.",
+    "asar": true,
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "dist/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "../LICENSE",
+        "to": "LICENSE.txt"
+      },
+      {
+        "from": "../NOTICE.md",
+        "to": "NOTICE.md"
+      }
+    ],
+    "win": {
+      "icon": "build/icon.ico",
+      "requestedExecutionLevel": "asInvoker",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "artifactName": "BootEaseSetup-${version}-${arch}.${ext}",
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "BootEase",
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "license": "../LICENSE",
+      "runAfterFinish": true,
+      "deleteAppDataOnUninstall": false
+    },
+    "portable": {
+      "artifactName": "BootEasePortable-${version}-${arch}.${ext}"
+    }
+  }
+}

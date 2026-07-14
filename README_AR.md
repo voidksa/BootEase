@@ -1,83 +1,104 @@
-# BootEase 🚀
-
-<div align="center">
-  <img src="https://raw.githubusercontent.com/voidksa/BootEase/main/app.ico" alt="BootEase Logo" width="128" height="128" />
-  <br>
-  <p><b>أداة بنقرة واحدة للدخول إلى BIOS/UEFI لنظام Windows</b></p>
-  
+<div dir="rtl" align="center">
+  <img src="electron-app/src/renderer/public/app_icon.png" alt="BootEase" width="104" height="104" />
+  <h1>BootEase</h1>
+  <p><strong>وصول مباشر إلى خيارات البيوس والاسترداد في Windows.</strong></p>
   <p>
-    <a href="https://github.com/voidksa/BootEase/releases/latest">
-      <img src="https://img.shields.io/github/v/release/voidksa/BootEase?style=for-the-badge&label=Download%20Latest&color=success" alt="تحميل آخر إصدار" />
-    </a>
+    <a href="https://github.com/voidksa/BootEase/releases/latest"><img src="https://img.shields.io/github/v/release/voidksa/BootEase?style=flat-square&label=Release" alt="أحدث إصدار" /></a>
+    <img src="https://img.shields.io/badge/Windows-10%20%7C%2011-2563eb?style=flat-square" alt="Windows 10 وWindows 11" />
+    <a href="LICENSE"><img src="https://img.shields.io/github/license/voidksa/BootEase?style=flat-square" alt="ترخيص GPL-3.0" /></a>
   </p>
-
+  <p><a href="README.md">English</a> · <a href="README_AR.md">العربية</a></p>
   <p>
-    <a href="README.md">English</a> | <a href="README_AR.md">العربية</a>
+    <a href="https://extractly.vip/"><img src="electron-app/src/renderer/public/extractly-mark.png" alt="Extractly.vip" width="56" /></a><br />
+    <sub>منتج تابع لـ <a href="https://extractly.vip/">Extractly.vip</a>، طُوّر بواسطة voidksa</sub>
   </p>
 </div>
 
-**BootEase** هي أداة حديثة وخفيفة لنظام Windows مصممة لإعادة تشغيل جهاز الكمبيوتر والدخول تلقائياً إلى إعدادات **BIOS/UEFI** بنقرة واحدة. لا حاجة للضغط المتكرر على مفاتيح F2 أو DEL أو ESC بعد الآن!
+<div dir="rtl">
 
-## ✨ المميزات
+## نبذة
+
+BootEase أداة مكتبية متخصصة لنظام Windows تتيح الدخول إلى إعدادات BIOS/UEFI أو خيارات استرداد Windows وتنفيذ إجراءات إعادة التشغيل الشائعة، من دون الاعتماد على توقيت الضغط على مفاتيح الإقلاع.
+
+أُعيد بناء الإصدار الثاني باستخدام Electron وTypeScript. يقدم هذا الإصدار واجهة عربية وإنجليزية، ودعمًا كاملًا لاتجاه RTL، ومعلومات واضحة عن النظام، وطلب صلاحية UAC عند الحاجة فقط، إضافة إلى نسخة تثبيت ونسخة محمولة لأنظمة Windows بمعمارية x64.
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/voidksa/BootEase/main/screenshots/app_ar.png" alt="واجهة البرنامج" width="70%" />
+  <img src="screenshots/app_ar.png" alt="واجهة BootEase 2.0 العربية" width="92%" />
 </div>
 
-- **دخول بنقرة واحدة**: إعادة التشغيل والدخول مباشرة إلى إعدادات UEFI.
-- **قائمة طاقة متقدمة**: خيارات لإعادة التشغيل إلى **وضع الاسترداد (الوضع الآمن)**، **البيوس**، أو إعادة تشغيل **مستكشف الملفات (Explorer)**.
-- **معلومات النظام**: عرض تفاصيل شاملة مثل **إصدار البيوس**، **نمط البيوس** (UEFI/Legacy)، حالة **الإقلاع الآمن**، و**موديل اللوحة الأم**.
-- **الوضع الداكن/الفاتح**: إمكانية التبديل بين الثيمات بنقرة زر.
-- **كشف تلقائي**: تكتشف تلقائياً ما إذا كان نظامك يدعم UEFI.
-- **دعم سطر الأوامر**: تدعم المعاملات `/bios`، `/safe`، و `/recovery` للأتمتة والاختصارات.
-- **صلاحيات المسؤول**: تطلب تلقائياً الصلاحيات اللازمة لتنفيذ أوامر النظام.
-- **واجهة حديثة**: واجهة مبنية بنظام البطاقات (Cards) باستخدام WPF (تدعم العربية والإنجليزية).
-- **نسخة محمولة ومثبت**: متوفرة كملف تنفيذي مستقل أو مثبت كامل مع دعم لإلغاء التثبيت.
+## الإمكانات
 
-## 🛠️ التثبيت
+| القسم | ما يقدمه BootEase |
+| --- | --- |
+| إعدادات البيوس | إعادة التشغيل والدخول مباشرة إلى إعدادات BIOS/UEFI في الأجهزة المدعومة. |
+| الاسترداد | فتح خيارات بدء التشغيل المتقدم والاسترداد في Windows. |
+| إعادة التشغيل | إعادة تشغيل Windows بصورة عادية أو إعادة تشغيل Windows Explorer فقط. |
+| معلومات النظام | عرض الجهاز واللوحة الأم وإصدار البيوس ونمطه وحالة الإقلاع الآمن ونظام التشغيل والمعمارية. |
+| اللغة والمظهر | واجهة عربية وإنجليزية مع دعم RTL، ومظهر فاتح أو داكن أو متوافق مع إعداد النظام. |
+| التصدير | نسخ معلومات النظام إلى الحافظة أو حفظها في ملف نصي. |
+| التحديثات | مقارنة الإصدار المثبت بأحدث إصدار عام منشور على GitHub. |
+| سطر الأوامر | تشغيل إجراءات إعادة التشغيل المدعومة من الاختصارات والبرامج النصية. |
 
-يمكنك تحميل أحدث مثبت من صفحة [الإصدارات (Releases)](https://github.com/voidksa/BootEase/releases).
+## التحميل
 
-1. حمل ملف `BootEaseSetup.exe`.
-2. شغل المثبت.
-3. يمكنك تغيير لغة التثبيت (عربي/إنجليزي) باستخدام الزر في الزاوية العلوية.
-4. شغل **BootEase** من سطح المكتب أو قائمة ابدأ.
+حمّل أحدث نسخة من صفحة [إصدارات GitHub](https://github.com/voidksa/BootEase/releases/latest).
 
-## ⚖️ الترخيص والحقوق (هام جداً)
+| الملف | الاستخدام المناسب |
+| --- | --- |
+| `BootEaseSetup-2.0.0-x64.exe` | يثبت BootEase وينشئ الاختصارات ويوفر إزالة تثبيت اعتيادية. هو الخيار الموصى به للاستخدام الدائم. |
+| `BootEasePortable-2.0.0-x64.exe` | يعمل مباشرة من دون تثبيت. مناسب للتجربة أو التشغيل من وحدة تخزين خارجية. |
 
-**هذا المشروع محمي بموجب رخصة GNU General Public License v3.0 (GPLv3) مع شروط إضافية للنشر.**
+يدعم BootEase نظامي Windows 10 وWindows 11 بمعمارية x64.
 
-### شروط الاستخدام والتعديل:
-1.  ✅ **حق التعديل:** يحق لأي شخص نسخ الكود المصدري، التعديل عليه، وتطويره.
-2.  ✅ **الإشارة للمطور:** يحق للمطورين الآخرين إضافة أسمائهم كـ "مساهمين" أو "معدلين" على النسخة الخاصة بهم.
-3.  ⛔ **حفظ الحقوق الأصلية (شرط ملزم):** **يمنع منعاً باتاً** إزالة رابط المستودع الأصلي (GitHub) أو اسم المطور الأصلي من واجهة البرنامج أو ملفات الشرح.
-4.  ⛔ **منع الانتحال:** لا يحق لأي نسخة معدلة أن تدعي أنها "النسخة الرسمية" أو أن المطور المعدل هو المالك الأصلي للمشروع. يجب توضيح أن النسخة هي **"تعديل غير رسمي"** (Fork).
-5.  ⛔ **استمرار الفتح:** أي تعديل يتم نشره **يجب** أن يكون مفتوح المصدر ومجانياً تحت نفس الرخصة (GPLv3). لا يحق لأحد أخذ الكود وتحويله لبرنامج مغلق أو مدفوع.
+## نموذج الأمان
 
-**باختصار:** طور وعدل كما تشاء، لكن لا تسرق الجهد وتنسبه لنفسك بالكامل، ولا تحذف رابط المصدر.
+يعمل BootEase بصلاحيات المستخدم العادية، ولا يطلب صلاحية UAC إلا بعد اختيارك وتأكيدك لعملية تحتاج إلى صلاحيات المسؤول.
 
-## 🏗️ البناء من المصدر
+واجهة Electron معزولة داخل Sandbox عن عمليات Windows ذات الصلاحيات المرتفعة. كما تُحظر عمليات التنقل والنوافذ المنبثقة وWebView وطلبات الأذونات، وتُقيد أوامر IPC والروابط الخارجية بقوائم سماح محددة.
 
-المتطلبات:
-- .NET 8.0 SDK
-- Visual Studio 2022
+قد تؤدي إجراءات إعادة التشغيل والدخول إلى البيوس إلى إغلاق التطبيقات المفتوحة. احفظ عملك قبل تأكيد أي إجراء.
 
-```powershell
-# استنساخ المستودع
-git clone https://github.com/voidksa/BootEase.git
+## خيارات سطر الأوامر
 
-# الانتقال للمشروع
-cd BootEase
-
-# بناء المشروع
-dotnet build BootEase.csproj -c Release
+```text
+BootEase.exe /bios
+BootEase.exe /recovery
+BootEase.exe /safe
+BootEase.exe /restart
 ```
 
-## 🤝 المساهمة
+يدعم البرنامج أيضًا الصيغتين `-option` و`--option`. يفتح الخيار `/safe` مسار الاسترداد نفسه الذي يفتحه `/recovery`.
 
-المساهمات مرحب بها!
-1. قم بعمل **Fork** للمستودع.
-2. أنشئ فرعاً جديداً (Branch).
-3. احفظ تغييراتك (Commit).
-4. ارفع التغييرات (Push).
-5. افتح طلب سحب (**Pull Request**).
+## البناء من المصدر
+
+المتطلبات:
+
+- Windows 10 أو Windows 11 بمعمارية x64
+- Node.js 22 أو أحدث
+- npm 11 أو أحدث
+
+```powershell
+git clone https://github.com/voidksa/BootEase.git
+cd BootEase\electron-app
+
+npm install
+npm test
+npm run build
+
+# إنشاء المثبت والنسخة المحمولة
+npm run dist:win
+```
+
+تُنشأ ملفات التوزيع داخل `electron-app/release/`. يوجد مصدر BootEase 2.x داخل مجلد [`electron-app`](electron-app/)، وتبقى الإصدارات السابقة متاحة عبر الوسوم وسجل الإصدارات في المستودع.
+
+## الترخيص والملكية
+
+BootEase برنامج حر مرخص بموجب [GNU General Public License v3.0](LICENSE). يجب أن تلتزم النسخ والتعديلات الموزعة بمتطلبات GPLv3 وأن تحافظ على إشعارات حقوق النشر والترخيص المطبقة.
+
+BootEase مملوك وتتم صيانته بواسطة [Extractly.vip](https://extractly.vip/)، وطُوّر في الأصل بواسطة **voidksa**. راجع [NOTICE.md](NOTICE.md) لتفاصيل نسب الحقوق. يتوفر دعم المنتج عبر [support@extractly.vip](mailto:support@extractly.vip).
+
+## المساهمة
+
+نرحب بالمشكلات وطلبات السحب. اجعل التغييرات محددة، ووثّق السلوك الظاهر للمستخدم، وشغّل الاختبارات قبل إرسال طلب السحب.
+
+</div>

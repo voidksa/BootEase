@@ -1,0 +1,50 @@
+# BootEase 1.x WPF project retained locally only
+/App.xaml
+/App.xaml.cs
+/AssemblyInfo.cs
+/BootEase.csproj
+/MainWindow.xaml
+/MainWindow.xaml.cs
+/app.manifest
+/app.ico
+/app_icon.png
+/setup.ico
+/setup_icon.png
+/Installer/
+/publish/
+/FinalBuild/
+/Payload/
+/BootEaseSetup.exe
+
+# Build Results
+[Bb]in/
+[Oo]bj/
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/
+
+# Temporary files
+*.log
+*.tmp
+thumbs.db
+.DS_Store
+
+# Python Cache (if any scripts used)
+__pycache__/
+*.pyc
+# Electron build results and dependencies
+electron-app/node_modules/
+electron-app/dist/
+electron-app/release/
+electron-app/release-*/
+electron-app/artifacts/
+electron-app/visual-preview*/
+electron-app/*-preview*/
+electron-app/.vite/
+electron-app/coverage/

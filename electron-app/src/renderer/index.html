@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BootEase</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand" aria-label="BootEase">
+          <img src="./app_icon.png" alt="" class="brand-icon" />
+          <div class="brand-copy">
+            <div class="brand-name-row">
+              <strong class="brand-name">BootEase</strong>
+              <span class="version-chip" id="version-chip">v2.0.0</span>
+            </div>
+            <span class="brand-tagline" data-i18n="appTagline">
+              System &amp; firmware utility
+            </span>
+          </div>
+        </div>
+
+        <div class="topbar-actions">
+          <button
+            class="toolbar-button"
+            id="update-button"
+            type="button"
+            data-i18n-aria-label="checkUpdates"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20 11a8.1 8.1 0 0 0-15.5-2M4 4v5h5M4 13a8.1 8.1 0 0 0 15.5 2M20 20v-5h-5" />
+            </svg>
+            <span class="control-label" data-i18n="updates">Updates</span>
+          </button>
+          <button
+            class="toolbar-button"
+            id="theme-button"
+            type="button"
+            data-i18n-aria-label="changeTheme"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 3a9 9 0 1 0 9 9c0-.5 0-1-.1-1.4A7 7 0 0 1 12 3Z" />
+            </svg>
+            <span class="control-label" id="theme-label">System</span>
+          </button>
+          <button class="toolbar-button" id="language-button" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" />
+              <path d="M3 12h18M12 3c2.2 2.5 3.3 5.5 3.3 9S14.2 18.5 12 21M12 3C9.8 5.5 8.7 8.5 8.7 12S9.8 18.5 12 21" />
+            </svg>
+            <span class="control-label" id="language-label">العربية</span>
+          </button>
+        </div>
+        <div class="window-controls">
+          <button class="window-control" id="window-minimize" type="button" aria-label="Minimize">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 12h12" />
+            </svg>
+          </button>
+          <button class="window-control window-close" id="window-close" type="button" aria-label="Close">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m7 7 10 10M17 7 7 17" />
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <section class="hero-panel" aria-labelledby="hero-title">
+          <div class="hero-content">
+            <div class="status-kicker">
+              <span class="status-dot" aria-hidden="true"></span>
+              <span data-i18n="windowsReady">Windows utility ready</span>
+            </div>
+            <h1 id="hero-title" data-i18n="readyTitle">
+              Boot options, without the key mashing
+            </h1>
+            <p data-i18n="readyDescription">
+              Review your firmware status and restart exactly where you need.
+            </p>
+            <div class="hero-badges">
+              <span class="soft-badge">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 3 5 6v5c0 4.6 2.8 8.2 7 10 4.2-1.8 7-5.4 7-10V6l-7-3Z" />
+                  <path d="m9 12 2 2 4-4" />
+                </svg>
+                <span data-i18n="elevationOnDemand">Elevation only when needed</span>
+              </span>
+              <span class="soft-badge" id="firmware-hero-badge">
+                <span data-i18n="detectingFirmware">Detecting firmware…</span>
+              </span>
+            </div>
+          </div>
+          <div class="hero-visual" aria-hidden="true">
+            <div class="power-orbit orbit-one"></div>
+            <div class="power-orbit orbit-two"></div>
+            <svg viewBox="0 0 64 64">
+              <path d="M32 7v22" />
+              <path d="M19.2 15.8A22 22 0 1 0 44.8 15.8" />
+            </svg>
+          </div>
+        </section>
+
+        <div class="dashboard-grid">
+          <section class="card system-card" aria-labelledby="system-title">
+            <div class="card-header">
+              <div>
+                <span class="section-eyebrow" data-i18n="deviceOverview">Device overview</span>
+                <h2 id="system-title" data-i18n="systemInformation">System information</h2>
+              </div>
+              <div class="card-tools">
+                <button class="icon-button" id="copy-button" type="button" disabled data-i18n-aria-label="copyInformation">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <rect x="8" y="8" width="11" height="11" rx="2" />
+                    <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
+                  </svg>
+                </button>
+                <button class="icon-button" id="save-button" type="button" disabled data-i18n-aria-label="saveInformation">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M5 4h11l3 3v13H5V4Z" />
+                    <path d="M8 4v6h8V4M8 20v-6h8v6" />
+                  </svg>
+                </button>
+                <button class="icon-button" id="refresh-button" type="button" data-i18n-aria-label="refreshInformation">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M20 11a8 8 0 0 0-14.9-4M4 4v5h5M4 13a8 8 0 0 0 14.9 4M20 20v-5h-5" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="info-grid" aria-live="polite">
+              <article class="info-item info-wide">
+                <div class="info-icon device-icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <rect x="3" y="4" width="18" height="13" rx="2" />
+                    <path d="M8 21h8M12 17v4" />
+                  </svg>
+                </div>
+                <div>
+                  <span class="info-label" data-i18n="deviceModel">Device model</span>
+                  <strong class="info-value loading-value" id="device-value">Loading…</strong>
+                </div>
+              </article>
+              <article class="info-item info-wide">
+                <div class="info-icon board-icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <rect x="4" y="4" width="16" height="16" rx="2" />
+                    <rect x="8" y="8" width="8" height="8" rx="1" />
+                    <path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3" />
+                  </svg>
+                </div>
+                <div>
+                  <span class="info-label" data-i18n="motherboard">Motherboard</span>
+                  <strong class="info-value loading-value" id="motherboard-value">Loading…</strong>
+                </div>
+              </article>
+              <article class="info-item compact-info">
+                <span class="info-label" data-i18n="biosVersion">BIOS version</span>
+                <strong class="info-value loading-value" id="bios-version-value">—</strong>
+              </article>
+              <article class="info-item compact-info">
+                <span class="info-label" data-i18n="biosMode">BIOS mode</span>
+                <strong class="info-value loading-value" id="bios-mode-value">—</strong>
+              </article>
+              <article class="info-item compact-info">
+                <span class="info-label" data-i18n="secureBoot">Secure Boot</span>
+                <strong class="state-pill neutral" id="secure-boot-value">—</strong>
+              </article>
+              <article class="info-item compact-info">
+                <span class="info-label" data-i18n="operatingSystem">Operating system</span>
+                <strong class="info-value loading-value" id="os-value">—</strong>
+              </article>
+            </div>
+            <div class="card-meta">
+              <span id="captured-at" data-i18n="loadingInformation">Loading system information…</span>
+            </div>
+          </section>
+
+          <section class="card actions-card" aria-labelledby="actions-title">
+            <div class="card-header">
+              <div>
+                <span class="section-eyebrow" data-i18n="quickActions">Quick actions</span>
+                <h2 id="actions-title" data-i18n="powerOptions">Power options</h2>
+              </div>
+              <span class="admin-chip">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 3 5 6v5c0 4.6 2.8 8.2 7 10 4.2-1.8 7-5.4 7-10V6l-7-3Z" />
+                </svg>
+                UAC
+              </span>
+            </div>
+
+            <p class="section-description" data-i18n="selectAction">
+              Choose where Windows should restart.
+            </p>
+
+            <div class="action-list" role="radiogroup" aria-labelledby="actions-title">
+              <button class="action-option selected" type="button" data-action="bios" role="radio" aria-checked="true">
+                <span class="action-symbol action-blue">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M8 3h8l5 5v8l-5 5H8l-5-5V8l5-5Z" />
+                    <path d="M9 9h6v6H9z" />
+                  </svg>
+                </span>
+                <span class="action-copy">
+                  <strong data-i18n="actionBios">BIOS / UEFI</strong>
+                  <small data-i18n="actionBiosDescription">Open firmware settings after restart</small>
+                </span>
+                <span class="radio-mark" aria-hidden="true"></span>
+              </button>
+              <button class="action-option" type="button" data-action="recovery" role="radio" aria-checked="false">
+                <span class="action-symbol action-violet">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 12a8 8 0 1 0 2.3-5.7L4 8.6" />
+                    <path d="M4 4v4.6h4.6M12 8v4l3 2" />
+                  </svg>
+                </span>
+                <span class="action-copy">
+                  <strong data-i18n="actionRecovery">Recovery mode</strong>
+                  <small data-i18n="actionRecoveryDescription">Advanced startup and Safe Mode</small>
+                </span>
+                <span class="radio-mark" aria-hidden="true"></span>
+              </button>
+              <button class="action-option" type="button" data-action="explorer" role="radio" aria-checked="false">
+                <span class="action-symbol action-amber">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M3 7h7l2 2h9v10H3V7Z" />
+                    <path d="M8 14a4 4 0 0 0 7.5 2M16 14a4 4 0 0 0-7.5-2M8 16v-2H6M16 12v2h2" />
+                  </svg>
+                </span>
+                <span class="action-copy">
+                  <strong data-i18n="actionExplorer">Restart Explorer</strong>
+                  <small data-i18n="actionExplorerDescription">Refresh the Windows desktop only</small>
+                </span>
+                <span class="radio-mark" aria-hidden="true"></span>
+              </button>
+              <button class="action-option" type="button" data-action="restart" role="radio" aria-checked="false">
+                <span class="action-symbol action-green">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M20 11a8 8 0 0 0-14.9-4M4 4v5h5M4 13a8 8 0 0 0 14.9 4M20 20v-5h-5" />
+                  </svg>
+                </span>
+                <span class="action-copy">
+                  <strong data-i18n="actionRestart">Normal restart</strong>
+                  <small data-i18n="actionRestartDescription">Restart Windows normally</small>
+                </span>
+                <span class="radio-mark" aria-hidden="true"></span>
+              </button>
+            </div>
+
+            <button class="primary-button" id="execute-button" type="button">
+              <span data-i18n="continueButton">Continue</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </button>
+            <p class="safety-note">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 11v5M12 8h.01" />
+              </svg>
+              <span data-i18n="confirmationNote">You will be asked to confirm before any action.</span>
+            </p>
+          </section>
+        </div>
+
+        <aside class="update-banner" id="update-banner" hidden>
+          <div>
+            <strong data-i18n="updateAvailable">A new BootEase version is available</strong>
+            <span id="update-version"></span>
+          </div>
+          <button class="secondary-button" id="open-release-button" type="button" data-i18n="viewRelease">
+            View release
+          </button>
+        </aside>
+      </main>
+
+      <footer class="footer">
+        <div class="extractly-footer-brand">
+          <img src="./extractly-mark.png" alt="Extractly.vip" class="extractly-footer-logo" />
+          <div class="extractly-footer-copy">
+            <strong>Extractly.vip</strong>
+            <span data-i18n="extractlyProduct">BootEase is an Extractly.vip product</span>
+          </div>
+          <button class="extractly-visit" id="extractly-button" type="button">
+            <span data-i18n="visitExtractly">Visit website</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M14 5h5v5M10 14 19 5M19 13v6H5V5h6" />
+            </svg>
+          </button>
+        </div>
+        <div class="footer-meta">
+          <span data-i18n="developerCredit">Developed by voidksa</span>
+          <span class="footer-separator" aria-hidden="true">•</span>
+          <button class="footer-link" id="support-button" type="button">support@extractly.vip</button>
+          <span class="footer-separator" aria-hidden="true">•</span>
+          <button class="footer-link" id="repository-button" type="button" data-i18n="sourceRepository">Source repository</button>
+          <span class="footer-separator" aria-hidden="true">•</span>
+          <button class="footer-link" id="about-button" type="button" data-i18n="rightsAndLicense">Rights &amp; license</button>
+        </div>
+      </footer>
+    </div>
+
+    <dialog class="modal" id="confirmation-dialog">
+      <div class="modal-icon warning-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 3 2.8 19h18.4L12 3Z" />
+          <path d="M12 9v4M12 16h.01" />
+        </svg>
+      </div>
+      <h2 data-i18n="confirmTitle">Confirm action</h2>
+      <p id="confirmation-message"></p>
+      <div class="modal-actions">
+        <button class="secondary-button" id="cancel-action-button" type="button" data-i18n="cancel">Cancel</button>
+        <button class="danger-button" id="confirm-action-button" type="button" data-i18n="confirm">Confirm</button>
+      </div>
+    </dialog>
+
+    <dialog class="modal about-modal" id="about-dialog">
+      <img src="./app_icon.png" alt="" class="about-icon" />
+      <h2>BootEase</h2>
+      <p class="about-version" id="about-version">Version 2.0.0</p>
+      <p data-i18n="attributionNotice">
+        Copyright © 2025–2026 Extractly.vip. Licensed under GNU GPLv3.
+      </p>
+      <div class="extractly-ownership-card">
+        <img src="./extractly-mark.png" alt="Extractly.vip" />
+        <div>
+          <strong data-i18n="ownedByExtractly">Owned and maintained by Extractly.vip</strong>
+          <span data-i18n="developerCredit">Developed by voidksa</span>
+        </div>
+        <button class="extractly-visit" id="about-extractly-button" type="button">
+          <span data-i18n="discoverExtractly">Discover Extractly</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M14 5h5v5M10 14 19 5M19 13v6H5V5h6" />
+          </svg>
+        </button>
+      </div>
+      <p class="about-detail" data-i18n="modifiedVersionsNotice">
+        Modified versions must preserve the original credit and repository link, identify their changes, and must not claim to be the official version.
+      </p>
+      <div class="about-links">
+        <button class="footer-link" id="about-repository-button" type="button" data-i18n="sourceRepository">Source repository</button>
+        <button class="footer-link" id="license-button" type="button" data-i18n="viewLicense">View GPLv3 license</button>
+      </div>
+      <button class="secondary-button modal-close" id="close-about-button" type="button" data-i18n="close">Close</button>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>
