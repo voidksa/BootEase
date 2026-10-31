@@ -2,6 +2,10 @@
 <img src="native-app/resources/icon.png" alt="BootEase" width="80" />
 <h1>BootEase 3.0.0</h1>
 <p>A Loaderly product · Created by voidksa</p>
+<p>
+<a href="https://github.com/voidksa/BootEase/releases/download/v3.0.0/BootEaseSetup-3.0.0-x64.exe"><img src="docs/assets/download-installer.svg" alt="Download Installer" width="240" height="48" /></a>
+<a href="https://github.com/voidksa/BootEase/releases/download/v3.0.0/BootEasePortable-3.0.0-x64.zip"><img src="docs/assets/download-portable.svg" alt="Download Portable" width="240" height="48" /></a>
+</p>
 <p><a href="README.md">English</a> · <a href="README_AR.md">العربية</a></p>
 </div>
 
