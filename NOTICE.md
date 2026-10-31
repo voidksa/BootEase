@@ -1,11 +1,10 @@
 # BootEase attribution notice
 
-BootEase is an Extractly.vip product, owned and maintained by Extractly.vip.
-Copyright (C) 2025-2026 Extractly.vip. Original developer: voidksa.
+BootEase is a Loaderly product, owned and maintained by Loaderly.
+Copyright (C) 2025-2026 Loaderly. Original developer: voidksa.
 
 Product website and support:
-https://extractly.vip/
-support@extractly.vip
+https://loaderly.app/
 
 Original project and official source repository:
 https://github.com/voidksa/BootEase

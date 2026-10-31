@@ -1,108 +1,51 @@
-<div dir="rtl" align="center">
-  <img src="electron-app/src/renderer/public/app_icon.png" alt="BootEase" width="104" height="104" />
-  <h1>BootEase</h1>
-  <p><strong>وصول مباشر إلى خيارات البيوس والاسترداد في Windows.</strong></p>
-  <p>
-    <a href="https://github.com/voidksa/BootEase/releases/latest"><img src="https://img.shields.io/github/v/tag/voidksa/BootEase?sort=semver&style=flat-square&label=Release" alt="أحدث إصدار" /></a>
-    <img src="https://img.shields.io/badge/Windows-10%20%7C%2011-2563eb?style=flat-square" alt="Windows 10 وWindows 11" />
-    <a href="LICENSE"><img src="https://img.shields.io/github/license/voidksa/BootEase?style=flat-square" alt="ترخيص GPL-3.0" /></a>
-  </p>
-  <p>
-    <a href="https://github.com/voidksa/BootEase/releases/download/v2.0.0/BootEaseSetup-2.0.0-x64.exe"><img src="https://img.shields.io/badge/Download-Installer-2563eb?style=for-the-badge&logo=windows&logoColor=white" alt="تحميل مثبت BootEase" /></a>
-    <a href="https://github.com/voidksa/BootEase/releases/download/v2.0.0/BootEasePortable-2.0.0-x64.exe"><img src="https://img.shields.io/badge/Download-Portable-0f766e?style=for-the-badge" alt="تحميل النسخة المحمولة من BootEase" /></a>
-  </p>
-  <p><a href="README.md">English</a> · <a href="README_AR.md">العربية</a></p>
-  <p>
-    <a href="https://extractly.vip/"><img src="electron-app/src/renderer/public/extractly-mark.png" alt="Extractly.vip" width="56" /></a><br />
-    <sub>منتج تابع لـ <a href="https://extractly.vip/">Extractly.vip</a>، طُوّر بواسطة voidksa</sub>
-  </p>
-</div>
-
-<div dir="rtl">
-
-## نبذة
-
-BootEase أداة مكتبية متخصصة لنظام Windows تتيح الدخول إلى إعدادات BIOS/UEFI أو خيارات استرداد Windows وتنفيذ إجراءات إعادة التشغيل الشائعة، من دون الاعتماد على توقيت الضغط على مفاتيح الإقلاع.
-
-أُعيد بناء الإصدار الثاني باستخدام Electron وTypeScript. يقدم هذا الإصدار واجهة عربية وإنجليزية، ودعمًا كاملًا لاتجاه RTL، ومعلومات واضحة عن النظام، وطلب صلاحية UAC عند الحاجة فقط، إضافة إلى نسخة تثبيت ونسخة محمولة لأنظمة Windows بمعمارية x64.
-
 <div align="center">
-  <img src="screenshots/app_ar.png" alt="واجهة BootEase 2.0 العربية" width="92%" />
+<img src="native-app/resources/icon.png" alt="BootEase" width="80" />
+<h1>BootEase 3.0.0</h1>
+<p>A Loaderly product · Created by voidksa</p>
+<p><a href="README.md">English</a> · <a href="README_AR.md">العربية</a></p>
 </div>
 
-## الإمكانات
-
-| القسم | ما يقدمه BootEase |
-| --- | --- |
-| إعدادات البيوس | إعادة التشغيل والدخول مباشرة إلى إعدادات BIOS/UEFI في الأجهزة المدعومة. |
-| الاسترداد | فتح خيارات بدء التشغيل المتقدم والاسترداد في Windows. |
-| إعادة التشغيل | إعادة تشغيل Windows بصورة عادية أو إعادة تشغيل Windows Explorer فقط. |
-| معلومات النظام | عرض الجهاز واللوحة الأم وإصدار البيوس ونمطه وحالة الإقلاع الآمن ونظام التشغيل والمعمارية. |
-| اللغة والمظهر | واجهة عربية وإنجليزية مع دعم RTL، ومظهر فاتح أو داكن أو متوافق مع إعداد النظام. |
-| التصدير | نسخ معلومات النظام إلى الحافظة أو حفظها في ملف نصي. |
-| التحديثات | مقارنة الإصدار المثبت بأحدث إصدار عام منشور على GitHub. |
-| سطر الأوامر | تشغيل إجراءات إعادة التشغيل المدعومة من الاختصارات والبرامج النصية. |
+BootEase أداة خفيفة لنظام Windows تجمع خيارات البيوس والاسترداد وإعادة التشغيل ومعلومات الجهاز في واجهة مدمجة.
 
 ## التحميل
 
-اختر النسخة المناسبة أدناه، أو افتح صفحة [أحدث إصدار](https://github.com/voidksa/BootEase/releases/latest) لقراءة ملاحظات الإصدار وبصمات الملفات.
+- [المثبّت لنظام Windows x64](https://github.com/voidksa/BootEase/releases/download/v3.0.0/BootEaseSetup-3.0.0-x64.exe)
+- [النسخة المحمولة ZIP لنظام Windows x64](https://github.com/voidksa/BootEase/releases/download/v3.0.0/BootEasePortable-3.0.0-x64.zip)
+- [الإصدارات وبصمات الملفات](https://github.com/voidksa/BootEase/releases)
 
-| الملف | الاستخدام المناسب |
-| --- | --- |
-| [تحميل `BootEaseSetup-2.0.0-x64.exe`](https://github.com/voidksa/BootEase/releases/download/v2.0.0/BootEaseSetup-2.0.0-x64.exe) | يثبت BootEase وينشئ الاختصارات ويوفر إزالة تثبيت اعتيادية. هو الخيار الموصى به للاستخدام الدائم. |
-| [تحميل `BootEasePortable-2.0.0-x64.exe`](https://github.com/voidksa/BootEase/releases/download/v2.0.0/BootEasePortable-2.0.0-x64.exe) | يعمل مباشرة من دون تثبيت. مناسب للتجربة أو التشغيل من وحدة تخزين خارجية. |
+يتطلب Windows 10 أو Windows 11 بمعمارية x64. الدخول المباشر إلى إعدادات البيوس يتطلب UEFI. المظهر الزجاجي يعتمد على دعم Windows وإعدادات الشفافية.
 
-يدعم BootEase نظامي Windows 10 وWindows 11 بمعمارية x64.
+## الميزات
 
-## نموذج الأمان
+- الدخول إلى BIOS/UEFI أو استرداد Windows بعد التأكيد.
+- إعادة تشغيل Windows أو مستكشف الملفات Explorer.
+- عرض معلومات الجهاز واللوحة الأم والبيوس والإقلاع الآمن والنظام.
+- نسخ معلومات الجهاز أو حفظها في تقرير نصي.
+- العربية والإنجليزية مع دعم اتجاه القراءة العربي.
+- مظهر فاتح وداكن وحركات تفاعل خفيفة.
+- التحقق اليدوي من التحديثات، مع خيار التحقق عند التشغيل من نافذة «حول التطبيق».
+- إشعار ومؤشر ترقية عند العثور على إصدار أحدث.
 
-يعمل BootEase بصلاحيات المستخدم العادية، ولا يطلب صلاحية UAC إلا بعد اختيارك وتأكيدك لعملية تحتاج إلى صلاحيات المسؤول.
+## الواجهة
 
-واجهة Electron معزولة داخل Sandbox عن عمليات Windows ذات الصلاحيات المرتفعة. كما تُحظر عمليات التنقل والنوافذ المنبثقة وWebView وطلبات الأذونات، وتُقيد أوامر IPC والروابط الخارجية بقوائم سماح محددة.
+هذه صور مرسومة من واجهة التطبيق ببيانات جهاز توضيحية. قد يختلف المظهر الزجاجي على جهازك.
 
-قد تؤدي إجراءات إعادة التشغيل والدخول إلى البيوس إلى إغلاق التطبيقات المفتوحة. احفظ عملك قبل تأكيد أي إجراء.
+![الواجهة العربية الداكنة](screenshots/app_ar.png)
+![الواجهة العربية الفاتحة](screenshots/app_ar_light.png)
+![حول التطبيق](screenshots/about_ar.png)
 
-## خيارات سطر الأوامر
+## الاستخدام
 
-```text
-BootEase.exe /bios
-BootEase.exe /recovery
-BootEase.exe /safe
-BootEase.exe /restart
-```
+ثبّت التطبيق باستخدام المثبّت، أو فك ضغط النسخة المحمولة وافتح `BootEase.exe` مع إبقاء الملفات المرفقة معه. اختر الإجراء واقرأ رسالة التأكيد قبل المتابعة. احفظ عملك قبل إعادة تشغيل Windows أو الدخول إلى البيوس أو الاسترداد.
 
-يدعم البرنامج أيضًا الصيغتين `-option` و`--option`. يفتح الخيار `/safe` مسار الاسترداد نفسه الذي يفتحه `/recovery`.
+زر اللغة يبدّل بين العربية والإنجليزية، وزر الشمس أو القمر يبدّل المظهر. من «حول التطبيق» يمكنك تفعيل التحقق عند التشغيل أو زيارة الموقع أو دعم التطوير. التحقق التلقائي مغلق افتراضيًا ولا يثبّت التحديثات. نافذة الحفظ تتبع لغة Windows، والتقرير يتبع لغة التطبيق.
 
-## البناء من المصدر
+## الموقع والدعم
 
-المتطلبات:
+- [Loaderly](https://loaderly.app/ar)
+- [التواصل مع الدعم](https://loaderly.app/ar/contact/)
+- [دعم التطوير](https://creators.sa/ar/voidksa)
 
-- Windows 10 أو Windows 11 بمعمارية x64
-- Node.js 22 أو أحدث
-- npm 11 أو أحدث
+## الترخيص
 
-```powershell
-git clone https://github.com/voidksa/BootEase.git
-cd BootEase\electron-app
-
-npm install
-npm test
-npm run build
-
-# إنشاء المثبت والنسخة المحمولة
-npm run dist:win
-```
-
-تُنشأ ملفات التوزيع داخل `electron-app/release/`. يوجد مصدر BootEase 2.x داخل مجلد [`electron-app`](electron-app/)، وتبقى الإصدارات السابقة متاحة عبر الوسوم وسجل الإصدارات في المستودع.
-
-## الترخيص والملكية
-
-BootEase برنامج حر مرخص بموجب [GNU General Public License v3.0](LICENSE). يجب أن تلتزم النسخ والتعديلات الموزعة بمتطلبات GPLv3 وأن تحافظ على إشعارات حقوق النشر والترخيص المطبقة.
-
-BootEase مملوك وتتم صيانته بواسطة [Extractly.vip](https://extractly.vip/)، وطُوّر في الأصل بواسطة **voidksa**. راجع [NOTICE.md](NOTICE.md) لتفاصيل نسب الحقوق. يتوفر دعم المنتج عبر [support@extractly.vip](mailto:support@extractly.vip).
-
-## المساهمة
-
-نرحب بالمشكلات وطلبات السحب. اجعل التغييرات محددة، ووثّق السلوك الظاهر للمستخدم، وشغّل الاختبارات قبل إرسال طلب السحب.
-
-</div>
+التطبيق مملوك وتحت صيانة Loaderly، والمطوّر الأصلي voidksa. مرخّص بموجب [GNU GPLv3](LICENSE). راجع [نسب العمل](NOTICE.md).

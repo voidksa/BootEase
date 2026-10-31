@@ -17,6 +17,10 @@
 /BootEaseSetup.exe
 
 # Build Results
+/.tools/
+/native-app/build/
+/native-app/.mygo/
+/native-app/coverage.out
 [Bb]in/
 [Oo]bj/
 
@@ -48,3 +52,11 @@ electron-app/visual-preview*/
 electron-app/*-preview*/
 electron-app/.vite/
 electron-app/coverage/
+
+# Local-only review and tooling
+/.release-review/
+/native-app/*_test.go
+/native-app/internal/**/*_test.go
+/native-app/build.ps1
+/native-app/VERIFICATION.md
+/native-app/assets/icons/PROVENANCE.json

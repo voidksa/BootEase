@@ -1,104 +1,51 @@
 <div align="center">
-  <img src="electron-app/src/renderer/public/app_icon.png" alt="BootEase" width="104" height="104" />
-  <h1>BootEase</h1>
-  <p><strong>Direct access to Windows firmware and recovery options.</strong></p>
-  <p>
-    <a href="https://github.com/voidksa/BootEase/releases/latest"><img src="https://img.shields.io/github/v/tag/voidksa/BootEase?sort=semver&style=flat-square&label=Release" alt="Latest release" /></a>
-    <img src="https://img.shields.io/badge/Windows-10%20%7C%2011-2563eb?style=flat-square" alt="Windows 10 and 11" />
-    <a href="LICENSE"><img src="https://img.shields.io/github/license/voidksa/BootEase?style=flat-square" alt="GPL-3.0 license" /></a>
-  </p>
-  <p>
-    <a href="https://github.com/voidksa/BootEase/releases/download/v2.0.0/BootEaseSetup-2.0.0-x64.exe"><img src="https://img.shields.io/badge/Download-Installer-2563eb?style=for-the-badge&logo=windows&logoColor=white" alt="Download BootEase installer" /></a>
-    <a href="https://github.com/voidksa/BootEase/releases/download/v2.0.0/BootEasePortable-2.0.0-x64.exe"><img src="https://img.shields.io/badge/Download-Portable-0f766e?style=for-the-badge" alt="Download BootEase portable" /></a>
-  </p>
-  <p><a href="README.md">English</a> · <a href="README_AR.md">العربية</a></p>
-  <p>
-    <a href="https://extractly.vip/"><img src="electron-app/src/renderer/public/extractly-mark.png" alt="Extractly.vip" width="56" /></a><br />
-    <sub>An <a href="https://extractly.vip/">Extractly.vip</a> product, developed by voidksa</sub>
-  </p>
+<img src="native-app/resources/icon.png" alt="BootEase" width="80" />
+<h1>BootEase 3.0.0</h1>
+<p>A Loaderly product · Created by voidksa</p>
+<p><a href="README.md">English</a> · <a href="README_AR.md">العربية</a></p>
 </div>
 
-## Overview
-
-BootEase is a focused Windows desktop utility for opening BIOS/UEFI firmware settings, Windows Recovery, or performing common restart actions without relying on startup key timing.
-
-Version 2 is rebuilt with Electron and TypeScript. It introduces a bilingual interface, proper right-to-left support, complete system information, selective UAC elevation, and installer and portable distributions for Windows x64.
-
-<div align="center">
-  <img src="screenshots/app_en.png" alt="BootEase 2.0 English interface" width="92%" />
-</div>
-
-## Capabilities
-
-| Area | What BootEase provides |
-| --- | --- |
-| Firmware access | Restart directly into BIOS/UEFI settings on supported systems. |
-| Recovery | Open Windows Advanced Startup and recovery options. |
-| Restart actions | Restart Windows normally or restart Windows Explorer only. |
-| System information | View the device, motherboard, BIOS version and mode, Secure Boot status, operating system, and architecture. |
-| Language and appearance | English and Arabic interfaces with full RTL support, plus light, dark, and system themes. |
-| Export | Copy system details to the clipboard or save them as a text file. |
-| Update checks | Compare the installed version with the latest public GitHub release. |
-| Command line | Launch supported restart actions from scripts or shortcuts. |
+BootEase is a lightweight Windows utility for firmware, recovery and restart options, with device information in one compact interface.
 
 ## Download
 
-Choose a package below, or open the [latest release](https://github.com/voidksa/BootEase/releases/latest) for release notes and checksums.
+- [Installer for Windows x64](https://github.com/voidksa/BootEase/releases/download/v3.0.0/BootEaseSetup-3.0.0-x64.exe)
+- [Portable ZIP for Windows x64](https://github.com/voidksa/BootEase/releases/download/v3.0.0/BootEasePortable-3.0.0-x64.zip)
+- [Releases and checksums](https://github.com/voidksa/BootEase/releases)
 
-| Package | Recommended use |
-| --- | --- |
-| [Download `BootEaseSetup-2.0.0-x64.exe`](https://github.com/voidksa/BootEase/releases/download/v2.0.0/BootEaseSetup-2.0.0-x64.exe) | Installs BootEase, creates shortcuts, and provides standard uninstallation. Recommended for regular use. |
-| [Download `BootEasePortable-2.0.0-x64.exe`](https://github.com/voidksa/BootEase/releases/download/v2.0.0/BootEasePortable-2.0.0-x64.exe) | Runs directly without installation. Useful for testing or carrying on removable storage. |
+Requires Windows 10 or Windows 11, x64. Direct firmware entry requires UEFI. Glass appearance depends on Windows support and transparency settings.
 
-BootEase supports Windows 10 and Windows 11 on x64 systems.
+## Features
 
-## Safety model
+- Open BIOS/UEFI settings or Windows Recovery after confirmation.
+- Restart Windows or restart Windows Explorer.
+- View device, motherboard, BIOS, Secure Boot and Windows information.
+- Copy system information or save it as a text report.
+- English and Arabic, including right-to-left layout.
+- Light and dark appearance with subtle interaction animations.
+- Check for updates manually, or enable optional checks on startup in About.
+- A notification and upgrade indicator when a newer release is found.
 
-BootEase runs with normal user permissions. It requests UAC elevation only after you select and confirm an operation that requires administrative access.
+## Interface
 
-The Electron renderer is sandboxed and isolated from privileged Windows operations. Navigation, popups, webviews, and permission requests are blocked, while IPC commands and external links are restricted to explicit allowlists.
+These images are rendered from the application UI using sample device data. Windows glass effects may differ on your computer.
 
-Restart and firmware actions can close active applications. Save your work before confirming an action.
+![English dark interface](screenshots/app_en.png)
+![English light interface](screenshots/app_en_light.png)
+![About BootEase](screenshots/about_en.png)
 
-## Command-line options
+## Use
 
-```text
-BootEase.exe /bios
-BootEase.exe /recovery
-BootEase.exe /safe
-BootEase.exe /restart
-```
+Install BootEase using the installer, or unpack the portable ZIP and open `BootEase.exe`, keeping its accompanying files together. Choose an action and read its confirmation before continuing. Save your work before restarting Windows or entering firmware or recovery settings.
 
-The `-option` and `--option` forms are also accepted. `/safe` opens the same Windows recovery flow as `/recovery`.
+The globe-language button switches English/Arabic. The sun or moon switches appearance. Use About to enable startup update checks, visit the website or support development. Automatic checks are off by default and do not install updates. The save dialog follows Windows language preferences; the report follows the app language.
 
-## Build from source
+## Website and support
 
-Requirements:
+- [Loaderly](https://loaderly.app)
+- [Contact support](https://loaderly.app/contact/)
+- [Support development](https://creators.sa/en/voidksa)
 
-- Windows 10 or Windows 11 x64
-- Node.js 22 or newer
-- npm 11 or newer
+## License
 
-```powershell
-git clone https://github.com/voidksa/BootEase.git
-cd BootEase\electron-app
-
-npm install
-npm test
-npm run build
-
-# Build the installer and portable executable
-npm run dist:win
-```
-
-Generated packages are written to `electron-app/release/`. BootEase 2.x source is maintained in [`electron-app`](electron-app/). Previous versions remain available through the repository tags and release history.
-
-## License and ownership
-
-BootEase is free software licensed under the [GNU General Public License v3.0](LICENSE). Distributed copies and modifications must follow the GPLv3 requirements and preserve applicable copyright and license notices.
-
-BootEase is owned and maintained by [Extractly.vip](https://extractly.vip/) and was originally developed by **voidksa**. See [NOTICE.md](NOTICE.md) for attribution details. Product support is available at [support@extractly.vip](mailto:support@extractly.vip).
-
-## Contributing
-
-Issues and pull requests are welcome. Keep changes focused, document user-visible behavior, and run the test suite before submitting a pull request.
+BootEase is owned and maintained by Loaderly, originally developed by voidksa. Licensed under [GNU GPLv3](LICENSE). See [attribution](NOTICE.md).

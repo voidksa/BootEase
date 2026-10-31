@@ -1,0 +1,8 @@
+{
+  "name": "BootEase",
+  "identifier": "com.voidksa.bootease",
+  "version": "3.0.0",
+  "copyright": "Copyright © 2025-2026 Loaderly. Developed by voidksa.",
+  "publisher": "Loaderly",
+  "out": "build"
+}
